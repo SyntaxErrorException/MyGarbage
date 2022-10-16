@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.app.domain.Schedule;
 import com.example.app.mapper.UserMapper;
 
 @Service
@@ -14,7 +15,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return mapper.selectByLoginId(username);
+		return mapper.selectByLoginId(username);//userNameだとエラーになる
 	}
+
+	@Override
+	public Schedule getAll(int id) {
+		return mapper.selectALL(id);
+	}
+
 }
 

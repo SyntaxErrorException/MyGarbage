@@ -4,26 +4,63 @@
 <mapper namespace="com.example.app.mapper.UserMapper">
 	<resultMap id="joinMap" type="User">
 		<id column="id" property="id" />
-		<result column="login_id" property="loginId"/>
-		<result column="login_pass" property="loginPass"/>
-		<result column="name" property="name"/>
-		<collection property="roles" ofType="String" javaType="list">
-			<result column="role"/>
+		<result column="login_id" property="loginId" />
+		<result column="login_pass" property="loginPass" />
+		<result column="name" property="name" />
+		<collection property="roles" ofType="String"
+			javaType="list">
+			<result column="role" />
+		</collection>
+	</resultMap>
+
+	<select id="selectByLoginId" parameterType="String"
+		resultMap="joinMap">
+		SELECT
+		users.id
+		,users.login_id
+		,users.login_pass
+		,users.name
+		,roles.name AS role
+		FROM users
+		JOIN users_roles
+		ON users.id = users_roles.user_id
+		JOIN roles
+		ON users_roles.role_id = roles.id
+		WHERE login_id = #{loginId}
+	</select>
+	
+	<resultMap id="Map" type="Schedule">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="days_ago" property="daysAgo" />
+		<result column="time" property="time" />
+		<result column="day_of_week" property="dayOfWeek" />
+		<collection property="types" ofType="String"
+			javaType="list">
+			<result column="type" />
 		</collection>
 	</resultMap>
 	
-	<select id="selectByLoginId" parameterType="String" resultMap="joinMap">
+	<select id="selectAll" parameterType="int"
+		resultMap="Map">
 		SELECT
-			users.id
-			,users.login_id
-			,users.login_pass
-			,users.name
-			,roles.name AS role
-		FROM users
-		JOIN users_roles
-			ON users.id = users_roles.user_id
-		JOIN roles
-			ON users_roles.role_id = roles.id
-		WHERE login_id = #{loginId};
+		schedules.id AS id
+		,alerts.user_id
+		,days_ago
+		,time
+		,day_of_week
+		,type
+		FROM
+		alerts
+		JOIN
+		schedules
+		ON
+		alerts.user_id = schedules.user_id
+		JOIN
+		garbages
+		ON
+		schedules.garbage_id = garbages.id
+		WHERE
+		alerts.user_id = 1
 	</select>
 </mapper>

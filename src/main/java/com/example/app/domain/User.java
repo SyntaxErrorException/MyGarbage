@@ -16,6 +16,8 @@ public class User implements UserDetails{
 	private String loginPass;
 	private String name;
 	private List<String> roles;
+	private List<Schedule> schedules;
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream()

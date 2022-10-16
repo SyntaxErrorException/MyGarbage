@@ -2,6 +2,7 @@ package com.example.app.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.app.domain.User;
@@ -18,7 +19,10 @@ public class HomeController {
 	
 	// ログイン済みのユーザー用
 	@GetMapping({"/user", "/user/home"})
-	public String userPage() {
+	public String userPage(Model model) {
+		//予定表示
+		//Schedule schedule = service.getAll(1);
+		//model.addAttribute("schedule", schedule);
 		return "userPage";
 	}
 	
@@ -27,4 +31,5 @@ public class HomeController {
 	public String adminPage() {
 		return "adminPage";
 	}
+	
 }
