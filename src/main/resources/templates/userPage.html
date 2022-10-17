@@ -13,8 +13,14 @@
 			<th>ゴミ</th>
 		</tr>
 		<tr th:each="i : ${#numbers.sequence(0,30)}">
-			<td th:text="${#temporals.format(today.plusDays(i),'yy年MM月dd日(E)')}"></td>
+			<td th:text="${#temporals.format(today.plusDays(i),'''yy/MM/dd(E)')}"></td>
 			<!-- 曜日ごとのゴミの種類を表示する -->
+			<td>
+				<th:block th:each="g, vs : ${garbageList}" th:switch="${vs.count}">
+					<span th:case="${garbageList.size()}">[[${g}]]</span>
+					<span th:case="*">[[|${g}・|]]</span>
+				</th:block>
+			</td>
 		</tr>
 	</table>
 

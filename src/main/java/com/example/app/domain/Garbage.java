@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class Garbage {
 	private Integer id;
-	private String Type;
+	private String type;
 }
