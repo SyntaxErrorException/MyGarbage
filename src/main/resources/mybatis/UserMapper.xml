@@ -61,6 +61,6 @@
 		ON
 		schedules.garbage_id = garbages.id
 		WHERE
-		alerts.user_id = 1
+		alerts.user_id = #{id}
 	</select>
 </mapper>

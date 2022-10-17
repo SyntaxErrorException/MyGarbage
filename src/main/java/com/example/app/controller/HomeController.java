@@ -1,5 +1,7 @@
 package com.example.app.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -25,9 +27,9 @@ public class HomeController {
 	
 	// ログイン済みのユーザー用
 	@GetMapping({"/user", "/user/home"})
-	public String userPage(Model model) {
+	public String userPage(@AuthenticationPrincipal  User user, Model model) {
 		//予定表示
-		Schedule schedule = service.getAll(1);
+		List<Schedule> schedule = service.getAll(user.getId());
 		model.addAttribute("schedule", schedule);
 		return "userPage";
 	}
