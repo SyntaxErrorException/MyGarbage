@@ -6,11 +6,24 @@
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<h1>User page</h1>
-<p>ここにテーブルを表示する</p>
-<a href="/home">戻る</a>
-<form th:action="@{/logout}" method="post">
-	<input type="submit" value="ログアウト"/>
-</form>
+	<h1>User page</h1>
+	<table>
+
+		<tr>
+			<th>曜日</th>
+			<th>ゴミ</th>
+		</tr>
+
+
+		<tr th:each="s : ${schedule}">
+			<td>[[${s.dayOfWeek}]]</td>
+			<td>[[${s.type}]]</td>
+		</tr>
+
+	</table>
+	<a href="/home">戻る</a>
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="ログアウト" />
+	</form>
 </body>
 </html>

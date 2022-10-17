@@ -1,7 +1,6 @@
 package com.example.app.domain;
 
 import java.time.LocalTime;
-import java.util.List;
 
 import lombok.Data;
 
@@ -12,5 +11,5 @@ public class Schedule {
 	private Integer daysAgo;
 	private LocalTime time;
 	private Integer dayOfWeek;
-	private List<String> types;
+	private String type;
 }
