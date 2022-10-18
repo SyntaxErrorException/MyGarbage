@@ -7,6 +7,7 @@
 </head>
 <body>
 	<h1>User page</h1>
+	<p th:each="s:${schedule.get(0)}" th:text="${s.garbages}"></p>
 	<table>
 		<tr>
 			<th>年月日</th>
@@ -15,12 +16,7 @@
 		<tr th:each="i : ${#numbers.sequence(0,30)}">
 			<td th:text="${#temporals.format(today.plusDays(i),'yy/MM/dd(E)')}"></td>
 			<!-- 曜日ごとのゴミの種類を表示する -->
-			<td>
-				<th:block th:each="g, vs : ${garbageList}" th:switch="${vs.count}">
-					<span th:case="${garbageList.size()}">[[${g}]]</span>
-					<span th:case="*">[[|${g}・|]]</span>
-				</th:block>
-			</td>
+
 		</tr>
 	</table>
 

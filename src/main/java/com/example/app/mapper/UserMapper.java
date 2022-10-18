@@ -11,5 +11,5 @@ import com.example.app.domain.User;
 @Mapper
 public interface UserMapper {
 	User selectByLoginId(String loginId);
-	List<Schedule> selectAll(int id);
+	List<Schedule> showSchedule(int id);
 }

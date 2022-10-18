@@ -1,4 +1,7 @@
 @charset "UTF-8";
 body{
-	background-color:#ded;
+	background-color:#cdc;
+}
+p,td,li {
+	color:#222;
 }
