@@ -23,41 +23,34 @@
 		,roles.name AS role
 		FROM users
 		JOIN users_roles
-		ON users.id = users_roles.user_id
+		ON users.id =
+		users_roles.user_id
 		JOIN roles
 		ON users_roles.role_id = roles.id
-		WHERE login_id = #{loginId}
-	</select>
-	
-	<resultMap id="Map" type="Schedule">
-		<id column="id" property="id" />
-		<result column="user_id" property="userId" />
-		<result column="days_ago" property="daysAgo" />
-		<result column="time" property="time" />
-		<result column="day_of_week" property="dayOfWeek" />
-		<result column="type" property="type" />
-	</resultMap>
-	
-	<select id="selectAll" parameterType="int"
-		resultMap="Map">
-		SELECT
-		schedules.id AS id
-		,alerts.user_id
-		,days_ago
-		,time
-		,day_of_week
-		,type
-		FROM
-		alerts
-		JOIN
-		schedules
-		ON
-		alerts.user_id = schedules.user_id
-		JOIN
-		garbages
-		ON
-		schedules.garbage_id = garbages.id
 		WHERE
-		alerts.user_id = #{id}
+		login_id = #{loginId}
+	</select>
+
+	<resultMap id="Map" type="Schedule">
+		<id column="id" property="id"/>
+		<result column="day_of_week" property="dayOfWeek"/>
+		<result column="type" property="garbage"/>
+	</resultMap>
+
+	<select id="showSchedule" parameterType="int" resultMap="Map">
+		SELECT
+		 schedules.id AS id
+		 ,day_of_week
+		 ,garbages.type
+		FROM
+		 users
+		JOIN
+		 schedules 
+		ON users.id = schedules.user_id
+		JOIN
+		 garbages 
+		ON schedules.garbage_id = garbages.id
+		WHERE
+		 users.id = #{id}
 	</select>
 </mapper>

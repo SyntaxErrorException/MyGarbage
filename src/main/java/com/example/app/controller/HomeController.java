@@ -1,9 +1,8 @@
 package com.example.app.controller;
 
-import java.time.DayOfWeek;
-import java.time.format.TextStyle;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -32,14 +31,16 @@ public class HomeController {
 	@GetMapping({"/user", "/user/home"})
 	public String userPage(@AuthenticationPrincipal  User user, Model model) {
 		//予定表示
-		Locale locale = Locale.getDefault();
-		List<Schedule> scheduleList = service.getAll(user.getId());
-		Integer i =scheduleList.get(0).getDayOfWeek();
-		System.out.println(DayOfWeek.of(i));
-		System.out.println(DayOfWeek.of(i).getDisplayName(TextStyle.SHORT,locale));
+		List<Schedule> schedules = service.getSchedule(user.getId());
+		Map<Integer,List<String>> m = service.mapTo(schedules);
+		for (Schedule s : schedules) {
+			System.out.println(s);
+		}
+		System.out.println(m.get(2));	
 		
-		
-		model.addAttribute("schedule", scheduleList);
+
+		model.addAttribute("mapedDayOfWeek", m);
+		model.addAttribute("today",LocalDate.now());
 		return "userPage";
 	}
 	
