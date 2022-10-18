@@ -2,6 +2,7 @@ package com.example.app.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,12 +31,16 @@ public class HomeController {
 	@GetMapping({"/user", "/user/home"})
 	public String userPage(@AuthenticationPrincipal  User user, Model model) {
 		//予定表示
-		List<Schedule> schedule = service.getSchedule(user.getId());
-		for (Schedule s : schedule) {
+		List<Schedule> schedules = service.getSchedule(user.getId());
+		Map<Integer,List<String>> m = service.mapTo(schedules);
+		for (Schedule s : schedules) {
 			System.out.println(s);
 		}
+		System.out.println(m.get(2));	
+		
+
+		model.addAttribute("mapedDayOfWeek", m);
 		model.addAttribute("today",LocalDate.now());
-		model.addAttribute("schedule", schedule);
 		return "userPage";
 	}
 	
