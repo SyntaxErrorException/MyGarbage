@@ -52,5 +52,6 @@
 		ON schedules.garbage_id = garbages.id
 		WHERE
 		 users.id = #{id}
+		ORDER BY day_of_week ASC
 	</select>
 </mapper>

@@ -7,19 +7,9 @@
 </head>
 <body>
 	<h1>User page</h1>
-	
-	<table>
-		<tr>
-			<th>年月日</th>
-			<th>ゴミ</th>
-		</tr>
-		<tr th:each="i : ${#numbers.sequence(0,30)}">
-			<td th:text="${#temporals.format(today.plusDays(i),'yy/MM/dd(E)')}"></td>
-			<!-- 曜日ごとのゴミの種類を表示する -->
-
-		</tr>
-	</table>
-
+	<ul th:each="s,vs:${schedules}">
+		<li th:text="|${dow.of(vs.count)}:${strb[vs.index]}|"></li>
+	</ul>
 	<a href="/home">戻る</a>
 	<form th:action="@{/logout}" method="post">
 		<input type="submit" value="ログアウト" />
