@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
 <title>User page</title>
@@ -8,21 +8,16 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 </head>
 <body>
 	<h1>User page</h1>
-	<p>ユーザー：<span sec:authentication="principal.name"></span></p>
+	<p>
+		ユーザー：<span sec:authentication="principal.name"></span>
+	</p>
 	<h3>[[${todayGarbage}]]</h3>
-	<form th:action="@{/logout}" method="post" style="display:inline;">
+	<form th:action="@{/logout}" method="post" style="display: inline;">
 		<input type="submit" value="ログアウト" />
 	</form>
 	<a href="/home">戻る</a>
-	<th:block th:each="i:${#numbers.sequence(0,30)}" th:with="today=${today.plusDays(i)}">
-	<th:block th:if="${today.isEqual(arrDate[0])||today.isEqual(arrDate[1])}">
-		<p th:text="${#temporals.format(today,'yy/MM/dd(E)')
-		 + ' ' + strb[dow.plus(i).getValue-1]} + '・不燃ごみ'"></p>
-	</th:block>
-	<th:block th:unless="${today.isEqual(arrDate[0])||today.isEqual(arrDate[1])}">
-		<p th:text="${#temporals.format(today,'yy/MM/dd(E)')
-		 + ' ' + strb[dow.plus(i).getValue-1]}"></p>
-	</th:block>
+	<th:block th:each="collection:${collectionDate}">
+		<p th:text="${collection}"></p>
 	</th:block>
 </body>
 </html>
