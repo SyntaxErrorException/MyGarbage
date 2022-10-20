@@ -2,6 +2,7 @@ package com.example.app.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,39 +35,46 @@ public class HomeController {
 		StringBuilder[] strb = new StringBuilder[7];
 		
 		//曜日の配列を作る
-		for(int i = 1; i <= 7; i++) {
-			strb[i-1] = new StringBuilder();
+		for(int i = 0; i < 7; i++) {
+			strb[i] = new StringBuilder();
 		}
 		
 		for (Schedule s : schedules) {
 			//確認のためにコンソールに表示する
+			//Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
 			System.out.println(s);
 			
-			//スケジュールから曜日とゴミの種類を変数に入れる
-			var dow = s.getDayOfWeek();
+			//曜日とゴミの種類を変数に入れる
+			int dow = s.getDayOfWeek();
 			String str = s.getGarbage();
 			
 			//ゴミの種類を曜日の配列に格納する
 			for(int i = 1; i <= 7; i++) {
 				if(dow == i){
-					strb[i-1].append(str + ",");
+					strb[i-1].append(str + "・");
 				}
 			}
 		}
 		
-		//最後の文字（カンマ）を除去する
+		//余分な区切り文字を除去する
 		 for(int i = 0; i < 7; i++) {
 			 if(strb[i].length()!=0) {
 				 strb[i].delete(strb[i].length()-1,strb[i].length()); 
 			 }
 		 }
 	
-		//今日のゴミの種類を変数に入れる
-		DayOfWeek dow = LocalDate.now().getDayOfWeek();
-		String todayGarbage = strb[dow.getValue()-1].toString();
-		
+		 //午前8時前と以後でメッセージを変える
+		 DayOfWeek dow = LocalDate.now().getDayOfWeek();
+		LocalTime now = LocalTime.now();
+		String todayGarbage;
+		if(now.isBefore(LocalTime.of(8,0))) {
+			todayGarbage = "今日は" + strb[dow.getValue()-1].toString() + "の日です。";
+		}else {
+			todayGarbage = "明日は" + strb[dow.getValue()].toString() + "の日です。";
+		}
+
+		//表示に必要な変数をmoderuに格納する
 		LocalDate today = LocalDate.now();
-		
 		model.addAttribute("todayGarbage", todayGarbage);
 		model.addAttribute("strb",strb);
 		model.addAttribute("today",today);
