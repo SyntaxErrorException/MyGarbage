@@ -3,6 +3,7 @@ package com.example.app.controller;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,13 +73,30 @@ public class HomeController {
 		}else {
 			todayGarbage = "明日は" + strb[dow.getValue()].toString() + "の日です。";
 		}
+		
+		LocalDate today = LocalDate.now();
+		LocalDate[] arrDate = new LocalDate[2]; 
+		for(int i =0; i < 30; i++) {
+			int[] n = {2,4};// 第n
+			int m = 3;// ?曜日
+			for (int j = 0; j < n.length; j++) {
+				LocalDate[] nonBurnableWaste = new LocalDate[n.length];
+				nonBurnableWaste[j] = today.plusDays(i).with(TemporalAdjusters.dayOfWeekInMonth(n[j],DayOfWeek.of(m)));
+				if (today.plusDays(i).isEqual(nonBurnableWaste[j])) {
+					arrDate[j] = today.plusDays(i);
+				}
+			}
+		}
+		
+		System.out.println(arrDate[0]);
+		System.out.println(arrDate[1]);
 
 		//表示に必要な変数をmoderuに格納する
-		LocalDate today = LocalDate.now();
 		model.addAttribute("todayGarbage", todayGarbage);
 		model.addAttribute("strb",strb);
 		model.addAttribute("today",today);
 		model.addAttribute("dow", dow);
+		model.addAttribute("arrDate", arrDate);
 		
 		return "userPage";
 	}

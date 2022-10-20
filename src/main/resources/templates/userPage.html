@@ -10,12 +10,14 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<h1>User page</h1>
 	<p>ユーザー：<span sec:authentication="principal.name"></span></p>
 	<h3>[[${todayGarbage}]]</h3>
-	<a href="/home">戻る</a>
-	<form th:action="@{/logout}" method="post">
+	<form th:action="@{/logout}" method="post" style="display:inline;">
 		<input type="submit" value="ログアウト" />
 	</form>
+	<a href="/home">戻る</a>
 	<th:block th:each="i:${#numbers.sequence(0,30)}">
-		<p th:text="${#temporals.format(today.plusDays(i),'yy/MM/dd(E)') + ' ' + strb[dow.plus(i).getValue-1]}"></p>
+		<p th:text="${#temporals.format(today.plusDays(i),'yy/MM/dd(E)')
+		 + ' ' + strb[dow.plus(i).getValue-1]}"></p>
+		<p th:if="${1==1}">*</p>
 	</th:block>
 </body>
 </html>
