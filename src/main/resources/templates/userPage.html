@@ -7,8 +7,9 @@
 </head>
 <body>
 	<h1>User page</h1>
+	<h3>今日は[[${todayGarbage}]]の日です。</h3>
 	<ul th:each="s,vs:${schedules}">
-		<li th:text="|${dow.of(vs.count)}:${strb[vs.index]}|"></li>
+		<li th:text="${strb[vs.index]}"></li>
 	</ul>
 	<a href="/home">戻る</a>
 	<form th:action="@{/logout}" method="post">
