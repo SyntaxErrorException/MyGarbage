@@ -2,9 +2,7 @@ package com.example.app.controller;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.TextStyle;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,52 +32,46 @@ public class HomeController {
 		//予定表示
 		List<Schedule> schedules = service.getSchedule(user.getId());
 		StringBuilder[] strb = new StringBuilder[7];
-		Locale locale = Locale.getDefault();
+		
+		//曜日の配列を作る
 		for(int i = 1; i <= 7; i++) {
-			strb[i-1] = new StringBuilder(DayOfWeek.of(i).getDisplayName(TextStyle.SHORT,locale));
-			//strb[i-1] = new StringBuilder(DayOfWeek.of(i).getDisplayName(TextStyle.SHORT,Locale.US));
-			strb[i-1].append(":");
+			strb[i-1] = new StringBuilder();
 		}
+		
 		for (Schedule s : schedules) {
+			//確認のためにコンソールに表示する
 			System.out.println(s);
+			
+			//スケジュールから曜日とゴミの種類を変数に入れる
 			var dow = s.getDayOfWeek();
 			String str = s.getGarbage();
-			switch (dow) {
-			case 1:
-				strb[0].append(str + ",");
-				break;
-			case 2:
-				strb[1].append(str+ ",");
-				break;
-			case 3:
-				strb[2].append(str+ ",");
-				break;
-			case 4:
-				strb[3].append(str+ ",");
-				break;
-			case 5:
-				strb[4].append(str+ ",");
-				break;
-			case 6:
-				strb[5].append(str+ ",");
-				break;
-			case 7:
-				strb[6].append(str+ ",");
-				break;
+			
+			//ゴミの種類を曜日の配列に格納する
+			for(int i = 1; i <= 7; i++) {
+				if(dow == i){
+					strb[i-1].append(str + ",");
+				}
 			}
 		}
-		for(int i = 0; i < 7; i++) {
-			strb[i].delete(strb[i].length()-1, strb[i].length());
-		}
-		//文字列から曜日を除いた部分を変数に入れる
+		
+		//最後の文字（カンマ）を除去する
+		 for(int i = 0; i < 7; i++) {
+			 if(strb[i].length()!=0) {
+				 strb[i].delete(strb[i].length()-1,strb[i].length()); 
+			 }
+		 }
+	
+		//今日のゴミの種類を変数に入れる
 		DayOfWeek dow = LocalDate.now().getDayOfWeek();
 		String todayGarbage = strb[dow.getValue()-1].toString();
-		todayGarbage = todayGarbage.replaceFirst(".*:", "");
+		
+		LocalDate today = LocalDate.now();
 		
 		model.addAttribute("todayGarbage", todayGarbage);
 		model.addAttribute("strb",strb);
-		model.addAttribute("schedules", schedules);
-		model.addAttribute("today",LocalDate.now());
+		model.addAttribute("today",today);
+		model.addAttribute("dow", dow);
+		
 		return "userPage";
 	}
 	

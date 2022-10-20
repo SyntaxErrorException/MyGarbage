@@ -8,9 +8,12 @@
 <body>
 	<h1>User page</h1>
 	<h3>今日は[[${todayGarbage}]]の日です。</h3>
-	<ul th:each="s,vs:${schedules}">
+	<th:block th:each="i:${#numbers.sequence(0,30)}">
+		<p th:text="${#temporals.format(today.plusDays(i),'yy/MM/dd(E)') + ' ' + strb[dow.plus(i).getValue-1]}"></p>
+	</th:block>
+<!-- 	<ul th:each="s,vs:${schedules}">
 		<li th:text="${strb[vs.index]}"></li>
-	</ul>
+	</ul> -->
 	<a href="/home">戻る</a>
 	<form th:action="@{/logout}" method="post">
 		<input type="submit" value="ログアウト" />
