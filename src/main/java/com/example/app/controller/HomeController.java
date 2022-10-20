@@ -74,7 +74,8 @@ public class HomeController {
 			todayGarbage = "明日は" + strb[dow.getValue()].toString() + "の日です。";
 		}
 		
-		LocalDate today = LocalDate.now();
+		//LocalDate today = LocalDate.now();
+		LocalDate today = LocalDate.of(2022,10,27);
 		LocalDate[] arrDate = new LocalDate[2]; 
 		for(int i =0; i < 30; i++) {
 			int[] n = {2,4};// 第n
@@ -87,9 +88,6 @@ public class HomeController {
 				}
 			}
 		}
-		
-		System.out.println(arrDate[0]);
-		System.out.println(arrDate[1]);
 
 		//表示に必要な変数をmoderuに格納する
 		model.addAttribute("todayGarbage", todayGarbage);

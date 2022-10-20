@@ -14,10 +14,15 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 		<input type="submit" value="ログアウト" />
 	</form>
 	<a href="/home">戻る</a>
-	<th:block th:each="i:${#numbers.sequence(0,30)}">
-		<p th:text="${#temporals.format(today.plusDays(i),'yy/MM/dd(E)')
+	<th:block th:each="i:${#numbers.sequence(0,30)}" th:with="today=${today.plusDays(i)}">
+	<th:block th:if="${today.isEqual(arrDate[0])||today.isEqual(arrDate[1])}">
+		<p th:text="${#temporals.format(today,'yy/MM/dd(E)')
+		 + ' ' + strb[dow.plus(i).getValue-1]} + '・不燃ごみ'"></p>
+	</th:block>
+	<th:block th:unless="${today.isEqual(arrDate[0])||today.isEqual(arrDate[1])}">
+		<p th:text="${#temporals.format(today,'yy/MM/dd(E)')
 		 + ' ' + strb[dow.plus(i).getValue-1]}"></p>
-		<p th:if="${1==1}">*</p>
+	</th:block>
 	</th:block>
 </body>
 </html>
