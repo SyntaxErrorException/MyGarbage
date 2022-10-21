@@ -7,4 +7,5 @@ public class Schedule {
 	private Integer id;
 	private Integer dayOfWeek;
 	private String garbage;
+	private NonBurnableWaste nonBurnableWaste;
 }

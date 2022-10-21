@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.app.domain.NonBurnableWaste;
 import com.example.app.domain.Schedule;
 import com.example.app.domain.User;
 import com.example.app.service.UserService;
@@ -43,6 +44,9 @@ public class HomeController {
 			strb[i] = new StringBuilder();
 		}
 
+		// 不燃ごみ用の配列と変数を立てる
+		Integer[] n = new Integer[2];// 第n
+		Integer m = 0;// ?曜日
 		for (Schedule s : schedules) {
 			// 確認のためにコンソールに表示する
 			// 例：Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
@@ -58,6 +62,11 @@ public class HomeController {
 					strb[i - 1].append(str + "・");
 				}
 			}
+
+			NonBurnableWaste nbw = s.getNonBurnableWaste();
+			n[0] = nbw.getWeek1();
+			n[1] = nbw.getWeek2();
+			m = nbw.getDayOfWeek();
 		}
 
 		// 余分な区切り文字を除去する
@@ -67,18 +76,17 @@ public class HomeController {
 			}
 		}
 
-		// 不燃ごみの日
-		int[] n = { 2, 4 };// 第n
-		int m = 3;// ?曜日
+		// 不燃ごみの日のリストを作る
 		List<LocalDate> list = new ArrayList<>();
 		LocalDate today = LocalDate.now();
 		// LocalDate today = LocalDate.of(2022, 10, 25);
-		LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
-		for (int j = 0; j < 2; j++) {
-			list.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
-			list.add(firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
+		if (n[0] != null) {
+			LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
+			for (int j = 0; j < 2; j++) {
+				list.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
+				list.add(firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
+			}
 		}
-
 		// 表示用の30日分の文字列を用意する
 		String[] collectionDate = new String[30];
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy/MM/dd(E)");

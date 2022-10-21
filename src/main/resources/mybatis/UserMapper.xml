@@ -35,13 +35,21 @@
 		<id column="id" property="id"/>
 		<result column="day_of_week" property="dayOfWeek"/>
 		<result column="type" property="garbage"/>
+		<association property="nonBurnableWaste">
+		 <result column="week1" property="week1"/>
+		 <result column="week2" property="week2"/>
+		 <result column="dow" property="dayOfWeek"/>
+		</association>
 	</resultMap>
 
 	<select id="showSchedule" parameterType="int" resultMap="Map">
 		SELECT
 		 schedules.id AS id
-		 ,day_of_week
+		 ,schedules.day_of_week
 		 ,garbages.type
+		 ,week1
+		 ,week2
+		 ,non_burnable_waste.day_of_week AS dow
 		FROM
 		 users
 		JOIN
@@ -50,8 +58,17 @@
 		JOIN
 		 garbages 
 		ON schedules.garbage_id = garbages.id
+		JOIN
+		 non_burnable_waste
+		ON users.id = non_burnable_waste.user_id
 		WHERE
 		 users.id = #{id}
 		ORDER BY day_of_week ASC
 	</select>
+
+	
+	
+	
+	
+	
 </mapper>
