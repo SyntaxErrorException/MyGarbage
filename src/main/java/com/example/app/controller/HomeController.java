@@ -32,27 +32,27 @@ public class HomeController {
 	// ログイン済みのユーザー用
 	@GetMapping({ "/user", "/user/home" })
 	public String userPage(@AuthenticationPrincipal User user, Model model) {
-		//DBから予定を取得する
+		// DBから予定を取得する
 		List<Schedule> schedules = service.getSchedule(user.getId());
 
-		//ゴミ種類表示用の文字列配列を生成する
+		// ゴミ種類表示用の文字列配列を生成する
 		StringBuilder[] strb = new StringBuilder[7];
 
-		//曜日の配列を作る
+		// 曜日の配列を作る
 		for (int i = 0; i < 7; i++) {
 			strb[i] = new StringBuilder();
 		}
 
 		for (Schedule s : schedules) {
-			//確認のためにコンソールに表示する
-			//Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
+			// 確認のためにコンソールに表示する
+			// Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
 			System.out.println(s);
 
-			//曜日とゴミの種類を変数に入れる
+			// 曜日とゴミの種類を変数に入れる
 			int dow = s.getDayOfWeek();
 			String str = s.getGarbage();
 
-			//ゴミの種類を曜日の配列に格納する
+			// ゴミの種類を曜日の配列に格納する
 			for (int i = 1; i <= 7; i++) {
 				if (dow == i) {
 					strb[i - 1].append(str + "・");
@@ -60,59 +60,61 @@ public class HomeController {
 			}
 		}
 
-		//余分な区切り文字を除去する
+		// 余分な区切り文字を除去する
 		for (int i = 0; i < 7; i++) {
 			if (strb[i].length() != 0) {
 				strb[i].delete(strb[i].length() - 1, strb[i].length());
 			}
 		}
+		//LocalDate today = LocalDate.now();
+		LocalDate today = LocalDate.of(2022, 10, 25);
 
-		//午前8時前と以後でメッセージを変える
-		DayOfWeek dow = LocalDate.now().getDayOfWeek();
-		LocalTime now = LocalTime.now();
-		String todayGarbage;
-		if (now.isBefore(LocalTime.of(8, 0))) {
-			todayGarbage = "今日は" + strb[dow.getValue() - 1].toString() + "の日です。";
-		} else {
-			todayGarbage = "明日は" + strb[dow.getValue()].toString() + "の日です。";
+
+		// 不燃ごみの日
+		int[] n = { 2, 4 };// 第n
+		int m = 3;// ?曜日
+
+		List<LocalDate> list = new ArrayList<>();
+		LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
+		for (int j = 0; j < 2; j++) {
+			list.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
+			list.add(firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
 		}
 
-		//表示用の30日分の文字列を用意する
-		LocalDate today = LocalDate.now();
-		//LocalDate today = LocalDate.of(2022, 12, 14);
-		System.out.println(today);
+		// 表示用の30日分の文字列を用意する
 		String[] collectionDate = new String[30];
-		List<LocalDate> arrDate = new ArrayList<>();
-		for (int i = 0; i < 30; i++) {
-			int[] n = { 2, 4 };// 第n
-			int m = 3;// ?曜日
-			for (int j = 0; j < n.length; j++) {
-				LocalDate[] nonBurnableWaste = new LocalDate[n.length];
-				nonBurnableWaste[j] = today.plusDays(i).with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m)));
-				if (today.plusDays(i).isEqual(nonBurnableWaste[j])) {
-					arrDate.add(today.plusDays(i));
-				}
-			}
-		}
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy/MM/dd(E)");
 		for (int i = 0; i < 30; i++) {
-			String strDate = dtf.format(today.plusDays(i));
-			for (LocalDate arr : arrDate) {
-				if (today.plusDays(i).equals(arr)) {
-					collectionDate[i] = strDate
-							+ " " + strb[today.plusDays(i).getDayOfWeek().getValue() - 1] + "・不燃ごみ";
+			LocalDate tdy = today.plusDays(i);
+			String strDate = dtf.format(tdy);
+			for (LocalDate li : list) {
+				if (tdy.isEqual(li)) {
+					collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1] + "・不燃ごみ";
+					break;// 不燃ごみの日に一致したらforから抜ける
 				} else {
-					collectionDate[i] = strDate + " " + strb[today.plusDays(i).getDayOfWeek().getValue() - 1];
+					collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
 				}
 			}
 		}
 
-		//確認のためコンソールに表示する
+		// 午前8時前と以後でメッセージを変える
+		DayOfWeek dow = today.getDayOfWeek();
+		LocalTime now = LocalTime.now();
+		String todayGarbage;
+		if (strb[dow.getValue()].isEmpty()) {
+			todayGarbage = "明日の収集はありません。";
+		} else if (now.isBefore(LocalTime.of(8, 0))) {
+			todayGarbage = "今日は" + collectionDate[0].replaceFirst("^.*\s", "") + "の日です。";
+		} else {
+			todayGarbage = "明日は" + collectionDate[1].replaceFirst("^.*\s", "") + "の日です。";
+		}
+
+		// 確認のためコンソールに表示する
 		for (String s : collectionDate) {
 			System.out.println(s);
 		}
 
-		//表示に必要な変数をmodelに格納する
+		// 表示に必要な変数をmodelに格納する
 		model.addAttribute("todayGarbage", todayGarbage);
 		model.addAttribute("collectionDate", collectionDate);
 
