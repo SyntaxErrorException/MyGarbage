@@ -35,7 +35,7 @@ public class HomeController {
 		// DBから予定を取得する
 		List<Schedule> schedules = service.getSchedule(user.getId());
 
-		// ゴミ種類表示用の文字列配列を生成する
+		// 曜日ごとのゴミの配列を作る
 		StringBuilder[] strb = new StringBuilder[7];
 
 		// 曜日の配列を作る
@@ -45,7 +45,7 @@ public class HomeController {
 
 		for (Schedule s : schedules) {
 			// 確認のためにコンソールに表示する
-			// Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
+			// 例：Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
 			System.out.println(s);
 
 			// 曜日とゴミの種類を変数に入れる
@@ -66,15 +66,13 @@ public class HomeController {
 				strb[i].delete(strb[i].length() - 1, strb[i].length());
 			}
 		}
-		//LocalDate today = LocalDate.now();
-		LocalDate today = LocalDate.of(2022, 10, 25);
-
 
 		// 不燃ごみの日
 		int[] n = { 2, 4 };// 第n
 		int m = 3;// ?曜日
-
 		List<LocalDate> list = new ArrayList<>();
+		LocalDate today = LocalDate.now();
+		// LocalDate today = LocalDate.of(2022, 10, 25);
 		LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
 		for (int j = 0; j < 2; j++) {
 			list.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
@@ -91,9 +89,8 @@ public class HomeController {
 				if (tdy.isEqual(li)) {
 					collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1] + "・不燃ごみ";
 					break;// 不燃ごみの日に一致したらforから抜ける
-				} else {
-					collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
 				}
+				collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
 			}
 		}
 
@@ -101,12 +98,18 @@ public class HomeController {
 		DayOfWeek dow = today.getDayOfWeek();
 		LocalTime now = LocalTime.now();
 		String todayGarbage;
-		if (strb[dow.getValue()].isEmpty()) {
-			todayGarbage = "明日の収集はありません。";
-		} else if (now.isBefore(LocalTime.of(8, 0))) {
-			todayGarbage = "今日は" + collectionDate[0].replaceFirst("^.*\s", "") + "の日です。";
+		if (now.isBefore(LocalTime.of(8, 0))) {
+			if (strb[dow.getValue() - 1].isEmpty()) {
+				todayGarbage = "今日の収集はありません。";
+			} else {
+				todayGarbage = "今日は" + collectionDate[0].replaceFirst("^.*\s", "") + "の日です。";
+			}
 		} else {
-			todayGarbage = "明日は" + collectionDate[1].replaceFirst("^.*\s", "") + "の日です。";
+			if (strb[dow.getValue()].isEmpty()) {
+				todayGarbage = "明日の収集はありません。";
+			} else {
+				todayGarbage = "明日は" + collectionDate[1].replaceFirst("^.*\s", "") + "の日です。";
+			}
 		}
 
 		// 確認のためコンソールに表示する

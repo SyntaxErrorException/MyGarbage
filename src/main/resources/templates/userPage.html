@@ -11,7 +11,7 @@
 	<p>
 		ユーザー：<span sec:authentication="principal.name"></span>
 	</p>
-	<h3>[[${todayGarbage}]]</h3>
+	<h4>[[${todayGarbage}]]</h4>
 	<form th:action="@{/logout}" method="post" style="display: inline;">
 		<input type="submit" value="ログアウト" />
 	</form>
