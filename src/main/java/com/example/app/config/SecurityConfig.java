@@ -11,21 +11,20 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		// HttpSecurityの設定
-		http.authorizeHttpRequests(req -> {
-			req.antMatchers("/", "/home", "/css/**").permitAll();
-			req.antMatchers("/user/**").authenticated();
-			req.anyRequest().hasRole("ADMIN");
-		}).formLogin();
-		
-		return http.build();
-	}
-	
-	// BCryptの使用
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // HttpSecurity‚Ì�Ý’è
+        http.authorizeHttpRequests(req -> {
+            req.antMatchers("/", "/home", "/css/**").permitAll();
+            req.antMatchers("/user/**").authenticated();
+            req.anyRequest().hasRole("ADMIN");
+        }).formLogin();
+
+        return http.build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

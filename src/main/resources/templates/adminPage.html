@@ -6,11 +6,25 @@
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-<h1>Admin page</h1>
-<p>ここにユーザ一覧を表示する</p>
-<a href="/home">戻る</a>
-<form th:action="@{/logout}" method="post">
-	<input type="submit" value="ログアウト"/>
-</form>
+	<h1>Admin page</h1>
+	<!-- メッセージ表示 -->
+	<th:block th:if="${msg}">[[${msg}]]</th:block>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>ログインID</th>
+			<th>名前</th>
+			<th>操作</th>
+		<tr th:each="u : ${userList}">
+			<td th:text="${u.id}"></td>
+			<td th:text="${u.loginId}"></td>
+			<td th:text="${u.name}"></td>
+			<td><a th:href="@{/admin/delete/{id}(id=${u.id})}">削除</a></td>
+		</tr>
+	</table>
+	<form class="logout" th:action="@{/logout}" method="post">
+		<input type="submit" value="ログアウト" />
+	</form>
+	<a href="/home">戻る</a>
 </body>
 </html>
