@@ -47,6 +47,8 @@ public class HomeController {
 		// 不燃ごみ用の配列と変数を立てる
 		Integer[] n = new Integer[2];// 第n
 		Integer m = 0;// ?曜日
+		
+		// スケジュールを作る
 		for (Schedule s : schedules) {
 			// 確認のためにコンソールに表示する
 			// 例：Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
@@ -55,18 +57,13 @@ public class HomeController {
 			// 曜日とゴミの種類を変数に入れる
 			int dow = s.getDayOfWeek();
 			String str = s.getGarbage();
-
-			// ゴミの種類を曜日の配列に格納する
+			
+			//曜日に対応したゴミの種類を連結していく
 			for (int i = 1; i <= 7; i++) {
 				if (dow == i) {
 					strb[i - 1].append(str + "・");
 				}
 			}
-
-			NonBurnableWaste nbw = s.getNonBurnableWaste();
-			n[0] = nbw.getWeek1();
-			n[1] = nbw.getWeek2();
-			m = nbw.getDayOfWeek();
 		}
 
 		// 余分な区切り文字を除去する
@@ -76,26 +73,39 @@ public class HomeController {
 			}
 		}
 
+		
 		// 不燃ごみの日のリストを作る
-		List<LocalDate> list = new ArrayList<>();
+		List<LocalDate> dayOfNonBurnableWaste = new ArrayList<>();
 		LocalDate today = LocalDate.now();
 		// LocalDate today = LocalDate.of(2022, 10, 25);
+		NonBurnableWaste nbw = schedules.get(0).getNonBurnableWaste();
+		n[0] = nbw.getWeek1();
+		n[1] = nbw.getWeek2();
+		m = nbw.getDayOfWeek();
 		if (n[0] != null) {
 			LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
 			for (int j = 0; j < 2; j++) {
-				list.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
-				list.add(firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
+				//今月
+				dayOfNonBurnableWaste.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
+				//来月
+				dayOfNonBurnableWaste.add(firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(m))));
 			}
 		}
+		
 		// 表示用の30日分の文字列を用意する
 		String[] collectionDate = new String[30];
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy/MM/dd(E)");
 		for (int i = 0; i < 30; i++) {
 			LocalDate tdy = today.plusDays(i);
 			String strDate = dtf.format(tdy);
-			for (LocalDate li : list) {
+			String row = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
+			for (LocalDate li : dayOfNonBurnableWaste) {
 				if (tdy.isEqual(li)) {
-					collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1] + "・不燃ごみ";
+					if(strb[tdy.getDayOfWeek().getValue() - 1].isEmpty()) {
+						collectionDate[i] = row + "不燃ごみ";
+					}else{
+						collectionDate[i] = row + "・不燃ごみ";
+					}
 					break;// 不燃ごみの日に一致したらforから抜ける
 				}
 				collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
