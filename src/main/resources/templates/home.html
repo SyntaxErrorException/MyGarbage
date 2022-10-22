@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Home</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
@@ -12,7 +13,7 @@
 		<li><a href="/admin">管理者ページ</a></li>
 	</ul>
 	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="ログアウト" />
+		<input class="btn btn-outline-dark" type="submit" value="ログアウト" />
 	</form>
 </body>
 </html>

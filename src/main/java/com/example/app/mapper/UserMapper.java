@@ -12,4 +12,5 @@ import com.example.app.domain.User;
 public interface UserMapper {
 	User selectByLoginId(String loginId);
 	List<Schedule> showSchedule(int id);
+	void insertSchedule(int id,int dayOfWeek,int garbageId,int week1,int week2,int dow);
 }

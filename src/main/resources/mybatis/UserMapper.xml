@@ -51,27 +51,20 @@
 		 ,week2
 		 ,non_burnable_waste.day_of_week AS dow
 		FROM
-		 users
-		JOIN
-		 schedules 
-		ON users.id = schedules.user_id
+		 schedules
 		JOIN
 		 garbages 
 		ON schedules.garbage_id = garbages.id
 		JOIN
 		 non_burnable_waste
-		ON users.id = non_burnable_waste.user_id
+		ON non_burnable_waste.user_id = schedules.user_id
 		WHERE
-		 users.id = #{id}
-		ORDER BY day_of_week ASC
+		 schedules.user_id = #{id}
 	</select>
 	
 	<insert id="insertSchedule">
-		INSERT INTO 
-		 schedules 
-		VALUES(null,#{},#{},#{})
+		
 	</insert>
-
 	
 	
 	

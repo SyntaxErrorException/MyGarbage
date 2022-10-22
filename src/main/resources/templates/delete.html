@@ -9,12 +9,17 @@
 </head>
 <body>
 	<h1>User Delete Confirm</h1>
+	<p>このユーザを削除します。よろしいですか？</p>
+	<form class="submitButton" th:action="@{/admin/delete/{id}(id=${userInfo.id})}" method="post">
+		<input type="submit" class="btn btn-outline-dark" value="OK" />
+	</form>
+	<a type="button" class="btn btn-outline-secondary" th:href="@{/admin}">戻る</a>
 	<th:block th:object="${userInfo}">
-		<table>
+		<table class="design04">
 			<tr>
-				<td>ID</td>
-				<td>ログインID</td>
-				<td>ユーザ名</td>
+				<th>ID</th>
+				<th>ログインID</th>
+				<th>ユーザ名</th>
 			</tr>
 			<tr>
 				<td th:text="*{id}"></td>
@@ -22,11 +27,6 @@
 				<td th:text="*{name}"></td>
 			</tr>
 		</table>
-	<p>このユーザを削除します。よろしいですか？</p>
-	<form th:action="@{/admin/delete/{id}(id=${userInfo.id})}" method="post">
-		<input type="submit" value="OK" />
-	</form>
-	<a th:href="@{/admin}">戻る</a>
 	</th:block>
 </body>
 </html>

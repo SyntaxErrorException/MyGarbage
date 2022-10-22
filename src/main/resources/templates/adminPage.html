@@ -10,24 +10,24 @@
 	<h1>Admin page</h1>
 	<!-- メッセージ表示 -->
 	<th:block th:if="${msg}">
-		<p>[[${msg}]]</p>
+		<p class="alert alert-success">[[${msg}]]</p>
 	</th:block>
 	<form class="submitButton" th:action="@{/logout}" method="post">
-		<input type="submit" value="ログアウト" />
+		<input type="submit" class="btn btn-outline-dark" value="ログアウト" />
 	</form>
-	<a href="/home">戻る</a>
-	<table>
+	<a type="button" class="btn btn-outline-secondary" href="/home">戻る</a>
+	<table class="design04">
 		<tr>
 			<th>ID</th>
 			<th>ログインID</th>
 			<th>名前</th>
 			<th>操作</th>
-
-			<tr th:each="u : ${userList}">
-	<td th:text="${u.id}"></td>
+		<tr th:each="u : ${userList}">
+			<td th:text="${u.id}"></td>
 			<td th:text="${u.loginId}"></td>
 			<td th:text="${u.name}"></td>
 			<td><a th:href="@{/admin/delete/{id}(id=${u.id})}">削除</a></td>
-		</tr></table>
+		</tr>
+	</table>
 </body>
 </html>

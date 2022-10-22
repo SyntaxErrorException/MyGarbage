@@ -38,9 +38,12 @@ public class HomeController {
 
 	// ログイン済みのユーザー用
 	@GetMapping({ "/user", "/user/home" })
-	public String userPage(@AuthenticationPrincipal User user, Model model) {
+	public String userPage(@AuthenticationPrincipal User user, Model model) throws Exception {
 		// DBから予定を取得する
 		List<Schedule> schedules = userService.getSchedule(user.getId());
+		if(schedules.isEmpty()) {
+			return "userPage";
+		}
 
 		// 曜日ごとのゴミの配列を作る
 		StringBuilder[] strb = new StringBuilder[7];
@@ -146,8 +149,21 @@ public class HomeController {
 
 		return "userPage";
 	}
+	
+	@GetMapping("/insert")
+	public String insertGet(@AuthenticationPrincipal User user,Model model) {
+		
+		return "insert";
+	}
+	
+	@PostMapping("/insert")
+	public String insert(@AuthenticationPrincipal User user, int dayOfWeek, int garbageId, int week1, int week2, int dow) throws Exception {
+//		userService.addSchedule(id,dayOfWeek,garbageId,week1,week2,dow);
+		userService.addSchedule(2,1,1,2,4,3);
+		return "userPage";
+	}
 
-	// 管理者用
+	// 管理者用---------------------------------------------------------------------------------------
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
 		List<User> userList = adminService.getUserList();
