@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.app.domain.Schedule;
+import com.example.app.domain.User;
 import com.example.app.mapper.UserMapper;
 
 @Service
@@ -26,10 +27,16 @@ public class UserServiceImpl implements UserService {
 	public List<Schedule> getSchedule(int id) throws Exception {
 		return mapper.showSchedule(id);
 	}
-
+	
+	//スケジュール登録メソッド未完成
 	@Override
 	public void addSchedule(int id, int dayOfWeek, int garbageId, int week1, int week2, int dow) throws Exception {
 		mapper.insertSchedule(id,dayOfWeek,garbageId,week1,week2,dow);
+	}
+
+	@Override
+	public void addUser(User user) throws Exception {
+		mapper.registUser(user);
 	}
 
 }

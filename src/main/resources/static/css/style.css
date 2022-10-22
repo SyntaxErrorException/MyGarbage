@@ -48,4 +48,6 @@ p,ul,ol {
 	display: inline;
 	margin: 5px auto;
 }
-
+.setting{
+	text-align: right;
+}

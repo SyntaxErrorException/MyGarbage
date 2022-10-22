@@ -35,6 +35,17 @@ public class HomeController {
 		System.out.println(user);
 		return "home";
 	}
+	
+	@GetMapping("register")
+	public String register() {
+		return "register";
+	}
+	
+	@PostMapping("register")
+	public String registerPost(User user) throws Exception {
+		userService.addUser(user);
+		return "/login";
+	}
 
 	// ログイン済みのユーザー用
 	@GetMapping({ "/user", "/user/home" })
@@ -42,7 +53,7 @@ public class HomeController {
 		// DBから予定を取得する
 		List<Schedule> schedules = userService.getSchedule(user.getId());
 		if(schedules.isEmpty()) {
-			return "userPage";
+			return "user/userPage";
 		}
 
 		// 曜日ごとのゴミの配列を作る
@@ -147,20 +158,19 @@ public class HomeController {
 		model.addAttribute("todayGarbage", todayGarbage);
 		model.addAttribute("dateAndGarbage", dateAndGarbage);
 
-		return "userPage";
+		return "user/userPage";
 	}
 	
-	@GetMapping("/insert")
+	@GetMapping("/user/setting")
 	public String insertGet(@AuthenticationPrincipal User user,Model model) {
-		
-		return "insert";
+		return "user/setting";
 	}
 	
-	@PostMapping("/insert")
+	@PostMapping("user/setting")
 	public String insert(@AuthenticationPrincipal User user, int dayOfWeek, int garbageId, int week1, int week2, int dow) throws Exception {
-//		userService.addSchedule(id,dayOfWeek,garbageId,week1,week2,dow);
-		userService.addSchedule(2,1,1,2,4,3);
-		return "userPage";
+		//userService.addSchedule(id,dayOfWeek,garbageId,week1,week2,dow);
+		userService.addSchedule(user.getId(),1,1,2,4,3);
+		return "redirect:/user/userPage";
 	}
 
 	// 管理者用---------------------------------------------------------------------------------------
@@ -168,14 +178,14 @@ public class HomeController {
 	public String adminPage(Model model) {
 		List<User> userList = adminService.getUserList();
 		model.addAttribute("userList", userList);
-		return "adminPage";
+		return "admin/adminPage";
 	}
 
 	@GetMapping("/admin/delete/{id}")
 	public String userDelete(Model model,@PathVariable Integer id) {
 		User userInfo = adminService.getUserById(id);
 		model.addAttribute("userInfo", userInfo);
-		return "delete";
+		return "admin/delete";
 	}
 
 	@PostMapping("/admin/delete/{id}")

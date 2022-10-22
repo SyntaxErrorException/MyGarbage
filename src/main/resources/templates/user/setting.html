@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Setting</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+	<h1>Setting</h1>
+	<form class="submitButton" th:action="@{/logout}" method="post">
+		<input type="submit" class="btn btn-outline-dark" value="設定" />
+	</form>
+	<a href="/home" type="button" class="btn btn-outline-secondary">戻る</a>
+</body>
+</html>

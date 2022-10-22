@@ -15,7 +15,7 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // HttpSecurity‚Ì�Ý’è
         http.authorizeHttpRequests(req -> {
-            req.antMatchers("/", "/home", "/css/**").permitAll();
+            req.antMatchers("/", "/home", "/css/**","/register").permitAll();
             req.antMatchers("/user/**").authenticated();
             req.anyRequest().hasRole("ADMIN");
         }).formLogin();
