@@ -3,28 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin page</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 	<h1>Admin page</h1>
 	<!-- メッセージ表示 -->
-	<th:block th:if="${msg}">[[${msg}]]</th:block>
+	<th:block th:if="${msg}">
+		<p>[[${msg}]]</p>
+	</th:block>
+	<form class="submitButton" th:action="@{/logout}" method="post">
+		<input type="submit" value="ログアウト" />
+	</form>
+	<a href="/home">戻る</a>
 	<table>
 		<tr>
 			<th>ID</th>
 			<th>ログインID</th>
 			<th>名前</th>
 			<th>操作</th>
-		<tr th:each="u : ${userList}">
-			<td th:text="${u.id}"></td>
+
+			<tr th:each="u : ${userList}">
+	<td th:text="${u.id}"></td>
 			<td th:text="${u.loginId}"></td>
 			<td th:text="${u.name}"></td>
 			<td><a th:href="@{/admin/delete/{id}(id=${u.id})}">削除</a></td>
-		</tr>
-	</table>
-	<form class="logout" th:action="@{/logout}" method="post">
-		<input type="submit" value="ログアウト" />
-	</form>
-	<a href="/home">戻る</a>
+		</tr></table>
 </body>
 </html>

@@ -2,27 +2,35 @@
 
 html {
   max-width: 70ch;
-  padding: 3em 1em;
+  /*padding: 3em 1em;*/
   margin: auto;
   line-height: 1.75;
   font-size: 1.25em;
 }
-h1,h2,h3,h4,h5,h6 {
-  margin: 3em 0 1em;
-}
-
-p,ul,ol {
-  margin-bottom: 2em;
-  color: #1d1d1d;
-  font-family: sans-serif;
-}
 body{
 	background-color:#cdc;
 }
-p,td,li{
-	color:#222;
+h1,h2,h3,h4,h5,h6 {
+  margin: 3em 0 1em;
 }
-th,td{
+p,ul,ol {
+  color: #1d1d1d;
+  font-family: sans-serif;
+}
+table{
+	width: 60%;
+	margin: auto auto;
+}
+th{
 	text-align: center;
 	border: black solid;
+	padding: 3px;
+}
+td{
+	text-align: left;
+	border: black solid;
+	padding: 3px;
+}
+.submitButton{
+	display: inline;
 }

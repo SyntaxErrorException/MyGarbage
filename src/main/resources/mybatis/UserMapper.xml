@@ -65,6 +65,12 @@
 		 users.id = #{id}
 		ORDER BY day_of_week ASC
 	</select>
+	
+	<insert id="insertSchedule">
+		INSERT INTO 
+		 schedules 
+		VALUES(null,#{},#{},#{})
+	</insert>
 
 	
 	

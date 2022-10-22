@@ -4,20 +4,23 @@
 <head>
 <meta charset="UTF-8">
 <title>User page</title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 	<h1>User page</h1>
-	<p>
-		ユーザー：<span sec:authentication="principal.name"></span>
-	</p>
-	<h4>[[${todayGarbage}]]</h4>
-	<form th:action="@{/logout}" method="post" style="display: inline;">
+	<p><span sec:authentication="principal.name"></span>さん、[[${todayGarbage}]]</p>
+	<form class="submitButton"  th:action="@{/logout}" method="post">
 		<input type="submit" value="ログアウト" />
 	</form>
 	<a href="/home">戻る</a>
-	<th:block th:each="date:${collectionDate}">
-		<p th:text="${date}"></p>
-	</th:block>
+	<table>
+		<tr>
+			<th>ゴミ出しカレンダー</th>
+		</tr>
+		<tr th:each="d:${dateAndGarbage}">
+			<td th:text="${d}"></td>
+		</tr>
+	</table>
 </body>
 </html>

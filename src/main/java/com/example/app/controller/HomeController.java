@@ -98,7 +98,7 @@ public class HomeController {
 		}
 
 		// 表示用の30日分の文字列を用意する
-		String[] collectionDate = new String[30];
+		String[] dateAndGarbage = new String[30];
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy/MM/dd(E)");
 		for (int i = 0; i < 30; i++) {
 			LocalDate tdy = today.plusDays(i);
@@ -107,13 +107,13 @@ public class HomeController {
 			for (LocalDate li : dayOfNonBurnableWaste) {
 				if (tdy.isEqual(li)) {
 					if (strb[tdy.getDayOfWeek().getValue() - 1].isEmpty()) {
-						collectionDate[i] = row + "不燃ごみ";
+						dateAndGarbage[i] = row + "不燃ごみ";
 					} else {
-						collectionDate[i] = row + "・不燃ごみ";
+						dateAndGarbage[i] = row + "・不燃ごみ";
 					}
 					break;// 不燃ごみの日に一致したらforから抜ける
 				}
-				collectionDate[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
+				dateAndGarbage[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
 			}
 		}
 
@@ -123,26 +123,26 @@ public class HomeController {
 		String todayGarbage;
 		if (now.isBefore(LocalTime.of(8, 0))) {
 			if (strb[dow.getValue() - 1].isEmpty()) {
-				todayGarbage = "今日の収集はありません。";
+				todayGarbage = "今日のゴミ収集はありません。";
 			} else {
-				todayGarbage = "今日は" + collectionDate[0].replaceFirst("^.*\s", "") + "の日です。";
+				todayGarbage = "今日は" + dateAndGarbage[0].replaceFirst("^.*\s", "") + "の日です。";
 			}
 		} else {
 			if (strb[dow.getValue()].isEmpty()) {
-				todayGarbage = "明日の収集はありません。";
+				todayGarbage = "明日のゴミ収集はありません。";
 			} else {
-				todayGarbage = "明日は" + collectionDate[1].replaceFirst("^.*\s", "") + "の日です。";
+				todayGarbage = "明日は" + dateAndGarbage[1].replaceFirst("^.*\s", "") + "の日です。";
 			}
 		}
 
 		// 確認のためコンソールに表示する
-		for (String s : collectionDate) {
+		for (String s : dateAndGarbage) {
 			System.out.println(s);
 		}
 
 		// 表示に必要な変数をmodelに格納する
 		model.addAttribute("todayGarbage", todayGarbage);
-		model.addAttribute("collectionDate", collectionDate);
+		model.addAttribute("dateAndGarbage", dateAndGarbage);
 
 		return "userPage";
 	}
