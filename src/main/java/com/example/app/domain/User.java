@@ -3,8 +3,8 @@ package com.example.app.domain;
 import java.util.Collection;
 import java.util.List;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,14 +17,14 @@ public class User implements UserDetails{
 	
 	private Integer id;
 	@NotBlank
-	@Min(4)
+	@Size(min=4, max=45)
 	private String loginId;
 	@NotBlank
-	@Min(8)
+	@Size(min=8, max=45)
 	private String loginPass;
 	@NotBlank
+	@Size(min=1, max=45)
 	private String name;
-	@NotBlank
 	private List<String> roles;
 	
 	@Override

@@ -8,11 +8,15 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -32,19 +36,23 @@ public class HomeController {
 
 	@GetMapping({ "/", "/home" })
 	public String home(@AuthenticationPrincipal User user) {
-		System.out.println(user);
 		return "home";
 	}
 	
 	@GetMapping("register")
-	public String register() {
+	public String register(Model model) {
+		User user = new User();
+		model.addAttribute("user", user);
 		return "register";
 	}
 	
 	@PostMapping("register")
-	public String registerPost(User user) throws Exception {
+	public String registerPost(@Valid @ModelAttribute User user,Errors errors) throws Exception {
+		if(errors.hasErrors()) {
+			return "register";
+		}
 		userService.addUser(user);
-		return "/login";
+		return "redirect:/login";
 	}
 
 	// ログイン済みのユーザー用
@@ -56,11 +64,12 @@ public class HomeController {
 			return "user/userPage";
 		}
 
-		// 曜日ごとのゴミの配列を作る
-		StringBuilder[] strb = new StringBuilder[7];
-
-		// 曜日の配列を作る
-		for (int i = 0; i < 7; i++) {
+		/*
+		 *  曜日ごとのゴミの配列を作る
+		 *  曜日の数値表現と、配列のインデックスを一致させるために要素数は8にする
+		 */
+		StringBuilder[] strb = new StringBuilder[8];
+		for (int i = 0; i < 8; i++) {
 			strb[i] = new StringBuilder();
 		}
 
@@ -72,18 +81,18 @@ public class HomeController {
 
 			// 曜日とゴミの種類を変数に入れる
 			int dow = s.getDayOfWeek();
-			String str = s.getGarbage();
+			String str = s.getGarbage().getType();
 
 			//曜日に対応したゴミの種類を連結していく
-			for (int i = 1; i <= 7; i++) {
+			for (int i = 1; i < 8; i++) {
 				if (dow == i) {
-					strb[i - 1].append(str + "・");
+					strb[i].append(str + "・");
 				}
 			}
 		}
 
 		// 余分な区切り文字を除去する
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 8; i++) {
 			if (strb[i].length() != 0) {
 				strb[i].delete(strb[i].length() - 1, strb[i].length());
 			}
@@ -110,24 +119,28 @@ public class HomeController {
 						firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(Question))));
 			}
 		}
+		System.out.println("----デバッグ用----");
+		for (LocalDate d : dayOfNonBurnableWaste) {
+			System.out.println(d);
+		}
 
 		// 表示用の30日分の文字列を用意する
 		String[] dateAndGarbage = new String[30];
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy/MM/dd(E)");
 		for (int i = 0; i < 30; i++) {
-			LocalDate tdy = today.plusDays(i);
-			String strDate = dtf.format(tdy);
-			String row = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
+			LocalDate date = today.plusDays(i);
+			String strDate = dtf.format(date);
+			String row = strDate + " " + strb[date.getDayOfWeek().getValue()];
 			for (LocalDate li : dayOfNonBurnableWaste) {
-				if (tdy.isEqual(li)) {
-					if (strb[tdy.getDayOfWeek().getValue() - 1].isEmpty()) {
+				if (date.isEqual(li)) {
+					if (strb[date.getDayOfWeek().getValue()].isEmpty()) {
 						dateAndGarbage[i] = row + "不燃ごみ";
 					} else {
 						dateAndGarbage[i] = row + "・不燃ごみ";
 					}
 					break;// 不燃ごみの日に一致したらforから抜ける
 				}
-				dateAndGarbage[i] = strDate + " " + strb[tdy.getDayOfWeek().getValue() - 1];
+				dateAndGarbage[i] = strDate + " " + strb[date.getDayOfWeek().getValue()];
 			}
 		}
 
@@ -136,20 +149,22 @@ public class HomeController {
 		LocalTime now = LocalTime.now();
 		String todayGarbage;
 		if (now.isBefore(LocalTime.of(8, 0))) {
-			if (strb[dow.getValue() - 1].isEmpty()) {
+			if (strb[dow.getValue()].isEmpty()) {
 				todayGarbage = "今日のゴミ収集はありません。";
 			} else {
 				todayGarbage = "今日は" + dateAndGarbage[0].replaceFirst("^.*\s", "") + "の日です。";
 			}
 		} else {
-			if (strb[dow.getValue()].isEmpty()) {
+			if (strb[dow.plus(1).getValue()].isEmpty()) {
 				todayGarbage = "明日のゴミ収集はありません。";
 			} else {
+				System.out.println(strb[dow.plus(1).getValue()]);
 				todayGarbage = "明日は" + dateAndGarbage[1].replaceFirst("^.*\s", "") + "の日です。";
 			}
 		}
 
 		// 確認のためコンソールに表示する
+		System.out.println("----デバッグ用----");
 		for (String s : dateAndGarbage) {
 			System.out.println(s);
 		}
@@ -159,21 +174,23 @@ public class HomeController {
 		model.addAttribute("dateAndGarbage", dateAndGarbage);
 
 		return "user/userPage";
-	}
+	}//END_@GetMapping("/user")
 	
 	@GetMapping("/user/setting")
-	public String insertGet(@AuthenticationPrincipal User user,Model model) {
+	public String insertGet(Model model) {
+		Schedule schedule = new Schedule();
+		model.addAttribute("schedule",schedule);
 		return "user/setting";
 	}
 	
-	@PostMapping("user/setting")
-	public String insert(@AuthenticationPrincipal User user, int dayOfWeek, int garbageId, int week1, int week2, int dow) throws Exception {
-		//userService.addSchedule(id,dayOfWeek,garbageId,week1,week2,dow);
-		userService.addSchedule(user.getId(),1,1,2,4,3);
-		return "redirect:/user/userPage";
+	@PostMapping("/user/setting")
+	public String insert(@ModelAttribute Schedule schedule,@AuthenticationPrincipal User user) throws Exception {
+		schedule.setUserId(user.getId());
+		userService.addSchedule(schedule);
+		return "redirect:/user";
 	}
 
-	// 管理者用---------------------------------------------------------------------------------------
+	// 管理者用-------------------------------------------------------------------------------------------------------
 	@GetMapping("/admin")
 	public String adminPage(Model model) {
 		List<User> userList = adminService.getUserList();

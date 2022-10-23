@@ -34,7 +34,7 @@
 	<resultMap id="Map" type="Schedule">
 		<id column="id" property="id"/>
 		<result column="day_of_week" property="dayOfWeek"/>
-		<result column="type" property="garbage"/>
+		<result column="type" property="garbage.type"/>
 		<association property="nonBurnableWaste">
 		 <result column="week1" property="week1"/>
 		 <result column="week2" property="week2"/>
@@ -52,24 +52,26 @@
 		 ,non_burnable_waste.day_of_week AS dow
 		FROM
 		 schedules
-		JOIN
+		LEFT JOIN
 		 garbages 
 		ON schedules.garbage_id = garbages.id
-		JOIN
+		LEFT JOIN
 		 non_burnable_waste
 		ON non_burnable_waste.user_id = schedules.user_id
 		WHERE
 		 schedules.user_id = #{id}
 	</select>
 	
-	<insert id="insertSchedule">
-		
+	<insert id="insertSchedule" parameterType="Schedule">
+		INSERT INTO schedules (user_id,day_of_week,garbage_id) VALUES(#{userId},#{dayOfWeek},#{garbage.id})
 	</insert>
 	
-	<insert id="registUser" parameterType="User">
-<!-- 		INSERT INTO users VALUES(NULL,#{loginId},#{loginPass},#{name},#{roles}); -->
+	<insert id="registUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO users VALUES(NULL,#{loginId},#{loginPass},#{name})
 	</insert>
 	
-	
+	<insert id="insertRole" parameterType="Integer">
+		INSERT INTO users_roles (user_id,role_id) VALUES(#{userId},1)
+	</insert>
 	
 </mapper>

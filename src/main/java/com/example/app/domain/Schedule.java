@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class Schedule {
 	private Integer id;
+	private Integer userId;
 	private Integer dayOfWeek;
-	private String garbage;
+	private Garbage garbage;
 	private NonBurnableWaste nonBurnableWaste;
 }

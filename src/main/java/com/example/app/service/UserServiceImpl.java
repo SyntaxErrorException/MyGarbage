@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,13 +31,16 @@ public class UserServiceImpl implements UserService {
 	
 	//スケジュール登録メソッド未完成
 	@Override
-	public void addSchedule(int id, int dayOfWeek, int garbageId, int week1, int week2, int dow) throws Exception {
-		mapper.insertSchedule(id,dayOfWeek,garbageId,week1,week2,dow);
+	public void addSchedule(Schedule schedule) throws Exception {
+		mapper.insertSchedule(schedule);
 	}
 
 	@Override
 	public void addUser(User user) throws Exception {
+		String pass = BCrypt.hashpw(user.getLoginPass(), BCrypt.gensalt());
+		user.setLoginPass(pass);
 		mapper.registUser(user);
+		mapper.insertRole(user.getId());
 	}
 
 }

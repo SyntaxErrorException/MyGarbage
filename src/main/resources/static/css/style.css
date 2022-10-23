@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 html {
-  max-width: 70ch;
+  max-width: 65ch;
   /*padding: 3em 1em;*/
   margin: auto;
   line-height: 1.75;
@@ -18,12 +18,14 @@ p,ul,ol {
   color: #1d1d1d;
   font-family: sans-serif;
 }
+
 .design04 {
- width: 80%;
+ width: 100%;
  text-align: left;
  border-collapse: collapse;
  border-spacing: 0;
  margin: 5px auto 5px;
+ border: solid 1px #778ca3;
 }
 .design04 tr:nth-child(2n+1) {
  background: #ddd;
@@ -51,3 +53,4 @@ p,ul,ol {
 .setting{
 	text-align: right;
 }
+

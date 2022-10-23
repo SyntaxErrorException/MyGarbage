@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	style="max-width: 75ch;">
 <head>
 <meta charset="UTF-8">
 <title>Setting</title>
@@ -9,9 +10,38 @@
 </head>
 <body>
 	<h1>Setting</h1>
-	<form class="submitButton" th:action="@{/logout}" method="post">
+	<form class="submitButton" th:action="@{/user/setting}" method="post" th:object="${schedule}">
+		<p style="width:90%;">ゴミ種類：<br />
+			<label for="1" class="btn btn-outline-info"><input id="1" type="checkbox" th:field="*{garbage.id}" value="1"/>
+				可燃ごみ</label>
+			<label for="2" class="btn btn-outline-info"><input id="2" type="checkbox" th:field="*{garbage.id}" value="2"/>
+				古紙</label>
+			<label for="3" class="btn btn-outline-info"><input id="3" type="checkbox" th:field="*{garbage.id}" value="3"/>
+				ペットボトル</label>
+			<label for="4" class="btn btn-outline-info"><input id="4" type="checkbox" th:field="*{garbage.id}" value="4"/>
+				ビン</label>
+			<label for="5" class="btn btn-outline-info"><input id="5" type="checkbox" th:field="*{garbage.id}" value="5"/>
+				カン</label>
+			<label for="6" class="btn btn-outline-info"><input id="6" type="checkbox" th:field="*{garbage.id}" value="6"/>
+				プラスチック</label>
+			<label for="7" class="btn btn-outline-info"><input id="7" type="checkbox" th:field="*{garbage.id}" value="7"/>
+				不燃ごみ</label>
+		</p>
+		<p style="width:90%;">曜日：<br />
+			<label for="MON" class="btn btn-outline-success"><input id="MON" type="checkbox" th:field="*{dayOfWeek}" value="1"/>
+				月</label>
+			<label for="TUE" class="btn btn-outline-success"><input id="TUE" type="checkbox" th:field="*{dayOfWeek}" value="2"/>
+				火</label>
+			<label for="WED" class="btn btn-outline-success"><input id="WED" type="checkbox" th:field="*{dayOfWeek}" value="3"/>
+				水</label>
+			<label for="THU" class="btn btn-outline-success"><input id="THU" type="checkbox" th:field="*{dayOfWeek}" value="4"/>
+				木</label>
+			<label for="FRI" class="btn btn-outline-success"><input id="FRI" type="checkbox" th:field="*{dayOfWeek}" value="5"/>
+				金</label>
+		</p>
+		
 		<input type="submit" class="btn btn-outline-dark" value="設定" />
 	</form>
-	<a href="/home" type="button" class="btn btn-outline-secondary">戻る</a>
+	<a href="/user" type="button" class="btn btn-outline-secondary">戻る</a>
 </body>
 </html>
