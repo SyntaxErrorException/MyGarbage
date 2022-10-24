@@ -104,20 +104,21 @@ public class HomeController {
 		LocalDate today = LocalDate.now();
 		// LocalDate today = LocalDate.of(2022, 10, 25);
 		// 不燃ごみ用の配列と変数を立てる
-		Integer[] n = new Integer[2];// 第n
-		Integer Question = 0;// ?曜日
+		List<Integer> n = new ArrayList<>();//第n
+		Integer Question = 0;//?曜日
 		NonBurnableWaste nbw = schedules.get(0).getNonBurnableWaste();
-		n[0] = nbw.getWeek1();
-		n[1] = nbw.getWeek2();
+		for(Integer i : nbw.getWeek()) {
+			n.add(i);
+		}
 		Question = nbw.getDayOfWeek();
-		if (n[0] != null) {
+		if (n.size() != 0) {
 			LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
-			for (int j = 0; j < 2; j++) {
+			for (int j = 0; j < n.size(); j++) {
 				//今月
-				dayOfNonBurnableWaste.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(Question))));
+				dayOfNonBurnableWaste.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
 				//来月
 				dayOfNonBurnableWaste.add(
-						firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n[j], DayOfWeek.of(Question))));
+						firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
 			}
 		}
 		System.out.println("----デバッグ用----");

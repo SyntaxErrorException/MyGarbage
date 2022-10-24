@@ -36,8 +36,7 @@
 		<result column="day_of_week" property="dayOfWeek" />
 		<result column="type" property="garbage.type" />
 		<association property="nonBurnableWaste">
-			<result column="week1" property="week1" />
-			<result column="week2" property="week2" />
+			<result column="week" property="week" />
 			<result column="dow" property="dayOfWeek" />
 		</association>
 	</resultMap>
@@ -47,8 +46,7 @@
 		schedules.id AS id
 		,schedules.day_of_week
 		,garbages.type
-		,week1
-		,week2
+		,week
 		,non_burnable_waste.day_of_week AS dow
 		FROM
 		schedules
