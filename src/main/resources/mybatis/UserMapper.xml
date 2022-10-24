@@ -90,6 +90,11 @@
 		INSERT INTO users_roles
 		(user_id,role_id) VALUES(#{userId},1)
 	</insert>
+	
+	<insert id="insertWeeks" parameterType="NonBurnableWaste">
+		INSERT INTO non_burnable_waste (user_id,week1,week2,day_of_week) 
+		VALUES(#{userId},#{week1},#{week2},#{dayOfWeek})
+	</insert>
 
 
 

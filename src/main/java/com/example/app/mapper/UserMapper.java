@@ -19,6 +19,6 @@ public interface UserMapper {
 	void insertSchedule(Schedule schedule) throws Exception;
 	void insertGarbageId() throws Exception;
 	List<Garbage> selectGarbages() throws Exception;
-	
+	String insertWeeks() throws Exception;
 	
 }
