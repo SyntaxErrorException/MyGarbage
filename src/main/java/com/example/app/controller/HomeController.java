@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.app.domain.Garbage;
 import com.example.app.domain.NonBurnableWaste;
 import com.example.app.domain.Schedule;
 import com.example.app.domain.User;
@@ -158,7 +159,6 @@ public class HomeController {
 			if (strb[dow.plus(1).getValue()].isEmpty()) {
 				todayGarbage = "明日のゴミ収集はありません。";
 			} else {
-				System.out.println(strb[dow.plus(1).getValue()]);
 				todayGarbage = "明日は" + dateAndGarbage[1].replaceFirst("^.*\s", "") + "の日です。";
 			}
 		}
@@ -177,17 +177,29 @@ public class HomeController {
 	}//END_@GetMapping("/user")
 	
 	@GetMapping("/user/setting")
-	public String insertGet(Model model) {
+	public String insertGet(Model model) throws Exception {
 		Schedule schedule = new Schedule();
+		List<Garbage> garbageList = userService.getGarbageList();
+		model.addAttribute("garbageList", garbageList);
 		model.addAttribute("schedule",schedule);
 		return "user/setting";
 	}
 	
 	@PostMapping("/user/setting")
-	public String insert(@ModelAttribute Schedule schedule,@AuthenticationPrincipal User user) throws Exception {
+	public String insert(@ModelAttribute Schedule schedule,Errors errors,@AuthenticationPrincipal User user) throws Exception {
+		if (errors.hasErrors()) {
+			return "redirect:/setting";
+		}
 		schedule.setUserId(user.getId());
 		userService.addSchedule(schedule);
-		return "redirect:/user";
+		return "redirect:/user/setting";
+	}
+	
+	@GetMapping("/user/nonBurnable")
+	public String nonBurnable(Model model) {
+		NonBurnableWaste nonBurnableWaste = new NonBurnableWaste();
+		model.addAttribute("nonBurnableWaste", nonBurnableWaste);
+		return "user/nonBurnable";
 	}
 
 	// 管理者用-------------------------------------------------------------------------------------------------------

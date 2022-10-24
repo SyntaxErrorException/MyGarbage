@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.app.domain.Garbage;
 import com.example.app.domain.Schedule;
 import com.example.app.domain.User;
 import com.example.app.mapper.UserMapper;
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void addSchedule(Schedule schedule) throws Exception {
 		mapper.insertSchedule(schedule);
+		//mapper.insertGarbageId(schedule.getId());
 	}
 
 	@Override
@@ -42,5 +44,11 @@ public class UserServiceImpl implements UserService {
 		mapper.registUser(user);
 		mapper.insertRole(user.getId());
 	}
+
+	@Override
+	public List<Garbage> getGarbageList() throws Exception {
+		return mapper.selectGarbages();
+	}
+
 
 }

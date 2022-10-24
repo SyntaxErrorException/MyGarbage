@@ -18,7 +18,9 @@ p,ul,ol {
   color: #1d1d1d;
   font-family: sans-serif;
 }
-
+label {
+	cursor: pointer;
+}
 .design04 {
  width: 100%;
  text-align: left;

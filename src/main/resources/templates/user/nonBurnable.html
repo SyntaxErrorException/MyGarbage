@@ -3,23 +3,22 @@
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <meta charset="UTF-8">
-<title>Setting</title>
+<title>Non Burnable Waste</title>
 <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 	<h1>Setting</h1>
-	<form class="submitButton" th:action="@{/user/setting}" method="post" th:object="${schedule}">
+	<form class="submitButton" th:action="@{/user/setting}" method="post" th:object="${nonBurnableWaste}">
 		<p>
 		ゴミの種類：<br />
-			<select th:field="*{garbage.id}" class="form-select" aria-label="Default select example">
-				<option value="">--選択してください--</option>
-				<option 
-					th:each="garbage : ${garbageList}"
-					th:value="${garbage.id}"
-					th:text="${garbage.type}">
-				</option>
-			</select>
+		不燃ごみ
+		</p>
+		<p>
+			<input id="week1" type="radio" name="week" value="13"/>
+				<label for="week1">第1・3</label>
+			<input id="week2" type="radio" name="week" value="24"/>
+				<label for="week2">第2・4</label>
 		</p>
 		<p>曜日：<br />
 			<label for="MON" class="btn btn-outline-primary"><input id="MON" type="checkbox" th:field="*{dayOfWeek}" value="1"/>
