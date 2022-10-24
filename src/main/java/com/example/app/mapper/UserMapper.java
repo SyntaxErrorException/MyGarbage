@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.app.domain.Garbage;
+import com.example.app.domain.NonBurnableWaste;
 import com.example.app.domain.Schedule;
 import com.example.app.domain.User;
 
@@ -19,6 +20,6 @@ public interface UserMapper {
 	void insertSchedule(Schedule schedule) throws Exception;
 	void insertGarbageId() throws Exception;
 	List<Garbage> selectGarbages() throws Exception;
-	String insertWeeks() throws Exception;
+	void insertNonBurnable(NonBurnableWaste nonBurnableWaste) throws Exception;
 	
 }

@@ -15,14 +15,14 @@
 		不燃ごみ
 		</p>
 		<p>
-			<input id="week1" type="checkbox" name="week" value="1" checked="checked"/>
+			<input id="week1" type="checkbox" name="week" th:field="*{week}" value="1" checked="checked"/>
 				<label for="week1">第1週</label>
-			<input id="week2" type="checkbox" name="week" value="2"/>
+			<input id="week2" type="checkbox" name="week" th:field="*{week}" value="2"/>
 				<label for="week2">第2週</label>
-			<input id="week3" type="checkbox" name="week" value="3"/>
-				<label for="week3">第2週</label>
-			<input id="week4" type="checkbox" name="week" value="4"/>
-				<label for="week4">第2週</label>
+			<input id="week3" type="checkbox" name="week" th:field="*{week}" value="3"/>
+				<label for="week3">第3週</label>
+			<input id="week4" type="checkbox" name="week" th:field="*{week}" value="4"/>
+				<label for="week4">第4週</label>
 		</p>
 		<p>曜日：<br />
 			<label for="MON" class="btn btn-outline-primary"><input id="MON" type="radio" th:field="*{dayOfWeek}" value="1"/>

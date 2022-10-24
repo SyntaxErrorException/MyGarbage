@@ -107,20 +107,26 @@ public class HomeController {
 		List<Integer> n = new ArrayList<>();//第n
 		Integer Question = 0;//?曜日
 		NonBurnableWaste nbw = schedules.get(0).getNonBurnableWaste();
-		for(Integer i : nbw.getWeek()) {
-			n.add(i);
-		}
-		Question = nbw.getDayOfWeek();
-		if (n.size() != 0) {
-			LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
-			for (int j = 0; j < n.size(); j++) {
-				//今月
-				dayOfNonBurnableWaste.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
-				//来月
-				dayOfNonBurnableWaste.add(
-						firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
+		if(nbw != null) {
+			for(Integer i : nbw.getWeek()) {
+				n.add(i);
 			}
+			Question = nbw.getDayOfWeek();
+			if (n.size() != 0) {
+				LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
+				for (int j = 0; j < n.size(); j++) {
+					//今月
+					dayOfNonBurnableWaste.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
+					//来月
+					dayOfNonBurnableWaste.add(
+							firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
+				}
+			}
+		}else{
+			//この後の日付比較で一致させないためにエポックを入れる
+			dayOfNonBurnableWaste.add(LocalDate.EPOCH);
 		}
+		
 		System.out.println("----デバッグ用----");
 		for (LocalDate d : dayOfNonBurnableWaste) {
 			System.out.println(d);
@@ -189,7 +195,7 @@ public class HomeController {
 	@PostMapping("/user/setting")
 	public String insert(@ModelAttribute Schedule schedule,Errors errors,@AuthenticationPrincipal User user) throws Exception {
 		if (errors.hasErrors()) {
-			return "redirect:/setting";
+			return "redirect:/user/setting";
 		}
 		schedule.setUserId(user.getId());
 		userService.addSchedule(schedule);
@@ -201,6 +207,17 @@ public class HomeController {
 		NonBurnableWaste nonBurnableWaste = new NonBurnableWaste();
 		model.addAttribute("nonBurnableWaste", nonBurnableWaste);
 		return "user/nonBurnable";
+	}
+	
+	@PostMapping("/user/nonBurnable")
+	public String nonBurnablePost(@ModelAttribute NonBurnableWaste nonBurnableWaste,Errors errors
+			,@AuthenticationPrincipal User user) throws Exception{
+		if(errors.hasErrors()) {
+			return "redirect:/user/nonBurnable";
+		}
+		nonBurnableWaste.setUser_id(user.getId());
+		userService.addNonBurnable(nonBurnableWaste);
+		return "redirect:/user";
 	}
 
 	// 管理者用-------------------------------------------------------------------------------------------------------

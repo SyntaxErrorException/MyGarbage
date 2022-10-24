@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.app.domain.Garbage;
+import com.example.app.domain.NonBurnableWaste;
 import com.example.app.domain.Schedule;
 import com.example.app.domain.User;
 import com.example.app.mapper.UserMapper;
@@ -48,6 +49,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<Garbage> getGarbageList() throws Exception {
 		return mapper.selectGarbages();
+	}
+
+	@Override
+	public void addNonBurnable(NonBurnableWaste nonBurnableWaste) throws Exception {
+		mapper.insertNonBurnable(nonBurnableWaste);
 	}
 
 
