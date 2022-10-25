@@ -91,9 +91,11 @@
 		(user_id,role_id) VALUES(#{userId},1)
 	</insert>
 	
-	<insert id="insertNonBurnable" parameterType="NonBurnableWaste">
-		INSERT INTO non_burnable_waste (user_id,week,day_of_week) 
-		VALUES(#{userId},#{week},#{dayOfWeek})
+	<insert id="insertNonBurnable">
+		INSERT INTO non_burnable_waste (user_id,week,day_of_week) VALUES
+		<foreach collection="weeks" item="week" separator=",">
+		(#{userId},#{week},#{youbi})
+		</foreach> 
 	</insert>
 
 

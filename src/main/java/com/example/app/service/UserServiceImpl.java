@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void addNonBurnable(NonBurnableWaste nonBurnableWaste) throws Exception {
-		mapper.insertNonBurnable(nonBurnableWaste);
+		mapper.insertNonBurnable(nonBurnableWaste.getWeek(), nonBurnableWaste.getDayOfWeek(), nonBurnableWaste.getUserId());
 	}
 
 
