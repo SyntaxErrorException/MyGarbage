@@ -215,7 +215,7 @@ public class HomeController {
 		if(errors.hasErrors()) {
 			return "redirect:/user/nonBurnable";
 		}
-		nonBurnableWaste.setUser_id(user.getId());
+		nonBurnableWaste.setUserId(user.getId());
 		userService.addNonBurnable(nonBurnableWaste);
 		return "redirect:/user";
 	}
