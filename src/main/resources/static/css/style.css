@@ -1,57 +1,99 @@
 @charset "UTF-8";
 
 html {
-  max-width: 65ch;
-  /*padding: 3em 1em;*/
-  margin: auto;
-  line-height: 1.75;
-  font-size: 1.25em;
+	max-width: 65ch;
+	/*padding: 3em 1em;*/
+	margin: auto;
+	line-height: 1.75;
+	font-size: 1.25em;
 }
-body{
-	background-color:#eee;
+
+body {
+	background-color: #eee;
 }
-h1,h2,h3,h4,h5,h6 {
-  margin: 3em 0 1em;
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 3em 0 1em;
 }
-p,ul,ol {
-  width: 80%;
-  color: #1d1d1d;
-  font-family: sans-serif;
+
+p, ul, ol {
+	width: 80%;
+	color: #1d1d1d;
+	font-family: sans-serif;
 }
+
 label {
 	cursor: pointer;
 }
+
 .design04 {
- width: 100%;
- text-align: left;
- border-collapse: collapse;
- border-spacing: 0;
- margin: 5px auto 5px;
- border: solid 1px #778ca3;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin: 5px auto 5px;
+	border: solid 1px #778ca3;
 }
+
 .design04 tr:nth-child(2n+1) {
- background: #ddd;
+	background: #ddd;
 }
+
 .design04 th {
- padding: 10px;
- background: #778ca3;
- border-right: solid 1px #778ca3;
- color: #ffffff;
+	padding: 10px;
+	background: #778ca3;
+	border-right: solid 1px #778ca3;
+	color: #ffffff;
 }
+
 .design04 th:last-child {
- border-right: none;
+	border-right: none;
 }
+
 .design04 td {
- padding: 10px;
- border-right: solid 1px #778ca3; 
+	padding: 10px;
+	border-right: solid 1px #778ca3;
 }
+
 .design04 td:last-child {
- border-right: none;
+	border-right: none;
 }
-.submitButton{
+
+.submitButton {
 	display: inline;
 	margin: 5px auto;
 }
-.setting{
+.btn-primary {
+	background-color: #69ABDB;
+	border: 2px #69ABDB;
+	color: #333;
+}
+.btn-danger {
+	background-color: #f26651;
+	border: 2px #f26651;
+	color: #333;
+}
+.setting {
 	text-align: right;
+}
+
+select {
+	/* 初期化 */
+	appearance: none;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	border: none;
+	border-radius: 5px;
+	color: #333;
+	font-size: 16px;
+	padding: 0 10px;
+	height: 40px;
+	width: 300px;
+	position: relative;
+	background: #cfcedb url({https://ginneko-atelier.com}/assets/arrow.svg)
+		no-repeat right 10px center/16px auto;
+}
+
+option[selected][disabled] {
+	display: none;
 }
