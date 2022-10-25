@@ -30,13 +30,13 @@ import com.example.app.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
-	
+
 	// ログイン済みのユーザー用
 	@GetMapping({ "/user", "/user/home" })
 	public String userPage(@AuthenticationPrincipal User user, Model model) throws Exception {
 		// DBから予定を取得する
 		List<Schedule> schedules = userService.getSchedule(user.getId());
-		if(schedules.isEmpty()) {
+		if (schedules.isEmpty()) {
 			return "user/userPage";
 		}
 
@@ -50,19 +50,20 @@ public class UserController {
 		}
 
 		// スケジュールを作る
+		System.out.println("----デバッグ用----");
 		for (Schedule s : schedules) {
 			// 確認のためにコンソールに表示する
 			// 例：Schedule(id=1, dayOfWeek=2, garbage=可燃ごみ)
 			System.out.println(s);
 
 			// 曜日とゴミの種類を変数に入れる
-			int dow = s.getDayOfWeek();
+			Integer dow = null;
 			String str = s.getGarbage().getType();
-
-			//曜日に対応したゴミの種類を連結していく
-			for (int i = 1; i < 8; i++) {
-				if (dow == i) {
-					strb[i].append(str + "・");
+			for (Integer x : s.getDayOfWeek()) {
+				dow = x;
+				//曜日に対応したゴミの種類を連結していく
+				for (int i = 1; i < 8; i++) {
+					strb[dow].append(str + "・");
 				}
 			}
 		}
@@ -82,8 +83,8 @@ public class UserController {
 		List<Integer> n = new ArrayList<>();//第n
 		Integer Question = 0;//?曜日
 		NonBurnableWaste nbw = schedules.get(0).getNonBurnableWaste();
-		if(nbw != null) {
-			for(Integer i : nbw.getWeek()) {
+		if (nbw != null) {
+			for (Integer i : nbw.getWeek()) {
 				n.add(i);
 			}
 			Question = nbw.getDayOfWeek();
@@ -91,17 +92,19 @@ public class UserController {
 				LocalDate firstDayOfNextMonth = today.plusMonths(1).withDayOfMonth(1);
 				for (int j = 0; j < n.size(); j++) {
 					//今月
-					dayOfNonBurnableWaste.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
+					dayOfNonBurnableWaste
+							.add(today.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
 					//来月
 					dayOfNonBurnableWaste.add(
-							firstDayOfNextMonth.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
+							firstDayOfNextMonth
+									.with(TemporalAdjusters.dayOfWeekInMonth(n.get(j), DayOfWeek.of(Question))));
 				}
 			}
-		}else{
+		} else {
 			//この後の日付比較で一致させないためにエポックを入れる
 			dayOfNonBurnableWaste.add(LocalDate.EPOCH);
 		}
-		
+
 		System.out.println("----デバッグ用----");
 		for (LocalDate d : dayOfNonBurnableWaste) {
 			System.out.println(d);
@@ -156,54 +159,56 @@ public class UserController {
 		model.addAttribute("dateAndGarbage", dateAndGarbage);
 
 		return "user/userPage";
-	}//END_@GetMapping("/user")
-	
+	}
+	//END_@GetMapping("/user")
+
 	@GetMapping("/user/setting")
 	public String insertGet(Model model) throws Exception {
 		Schedule schedule = new Schedule();
 		List<Garbage> garbageList = userService.getGarbageList();
 		model.addAttribute("garbageList", garbageList);
-		model.addAttribute("schedule",schedule);
+		model.addAttribute("schedule", schedule);
 		return "user/setting";
 	}
-	
+
 	@GetMapping("/user/nonBurnable")
 	public String nonBurnable(Model model) {
 		NonBurnableWaste nonBurnableWaste = new NonBurnableWaste();
 		model.addAttribute("nonBurnableWaste", nonBurnableWaste);
 		return "user/nonBurnable";
 	}
-	
+
 	@PostMapping("/user/nonBurnable")
-	public String nonBurnablePost(@ModelAttribute NonBurnableWaste nonBurnableWaste,Errors errors
-			,@AuthenticationPrincipal User user) throws Exception{
-		if(errors.hasErrors()) {
+	public String nonBurnablePost(@ModelAttribute NonBurnableWaste nonBurnableWaste, Errors errors,
+			@AuthenticationPrincipal User user) throws Exception {
+		if (errors.hasErrors()) {
 			return "redirect:/user/nonBurnable";
 		}
 		nonBurnableWaste.setUserId(user.getId());
 		userService.addNonBurnable(nonBurnableWaste);
 		return "redirect:/user";
 	}
-	
-	@RequestMapping(value = "/user/setting", params ="add", method=RequestMethod.POST)
-	public String insert(@ModelAttribute Schedule schedule,Errors errors,@AuthenticationPrincipal User user, RedirectAttributes ra) throws Exception {
+
+	@RequestMapping(value = "/user/setting", params = "add", method = RequestMethod.POST)
+	public String insert(@ModelAttribute Schedule schedule, Errors errors, @AuthenticationPrincipal User user,
+			RedirectAttributes ra) throws Exception {
 		if (errors.hasErrors()) {
 			return "redirect:/user/setting";
 		}
 		schedule.setUserId(user.getId());
 		userService.addSchedule(schedule);
-		ra.addFlashAttribute("msg","予定を追加しました。" );
+		ra.addFlashAttribute("msg", "予定を追加しました。");
 		return "redirect:/user/setting";
 	}
-	
-	@RequestMapping(value = "/user/setting", params ="del", method=RequestMethod.POST)
-	public String scheduleDelete(@AuthenticationPrincipal User user, @ModelAttribute Schedule schedule, RedirectAttributes ra) throws Exception {
+
+	@RequestMapping(value = "/user/setting", params = "del", method = RequestMethod.POST)
+	public String scheduleDelete(@AuthenticationPrincipal User user, @ModelAttribute Schedule schedule,
+			RedirectAttributes ra) throws Exception {
 		//削除メソッド実行
 		schedule.setUserId(user.getId());
 		userService.removeSchedule(schedule);
 		ra.addFlashAttribute("msg", "予定を削除しました。");
 		return "redirect:/user/setting";
 	}
-	
 
 }
