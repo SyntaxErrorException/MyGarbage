@@ -33,8 +33,9 @@
 			<label for="FRI" class="btn btn-outline-warning"><input id="FRI" type="checkbox" th:field="*{dayOfWeek}" value="5"/>
 				金</label>
 		</p>
-		<input type="submit" class="btn btn-outline-dark" value="登録" />
+		<input type="submit" class="btn btn-outline-dark" value="追加" />
 	</form>
+	<a th:href="${/user/delete}" type="button" class="btn btn-outline-secondary">削除</a>
 	<a href="/user" type="button" class="btn btn-outline-secondary">戻る</a>
 </body>
 </html>
