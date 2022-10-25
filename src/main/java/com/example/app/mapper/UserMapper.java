@@ -4,9 +4,9 @@ package com.example.app.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.app.domain.Garbage;
-import com.example.app.domain.NonBurnableWaste;
 import com.example.app.domain.Schedule;
 import com.example.app.domain.User;
 
@@ -20,6 +20,6 @@ public interface UserMapper {
 	void insertSchedule(Schedule schedule) throws Exception;
 	void insertGarbageId() throws Exception;
 	List<Garbage> selectGarbages() throws Exception;
-	void insertNonBurnable(NonBurnableWaste nonBurnableWaste) throws Exception;
+	void insertNonBurnable(@Param("weeks") List<Integer> weeks, @Param("youbi") Integer youbi, @Param("userId") Integer userId) throws Exception;
 	
 }
