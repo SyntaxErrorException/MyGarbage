@@ -9,14 +9,11 @@
 </head>
 <body>
 	<h1>Setting</h1>
-	<th:block th:if="${msg}">
-		<p  class="alert alert-danger" th:text="${msg}"></p>
-	</th:block>
 	<form class="submitButton" th:action="@{/user/setting}" method="post" th:object="${schedule}">
 		<p>
 		ゴミの種類：<br />
-			<select th:field="*{garbage.id}" class="form-select">
-				<option value="" disabled>--選択してください--</option>
+			<select th:field="*{garbage.id}" class="form-select" aria-label="Default select example">
+				<option value="">--選択してください--</option>
 				<option 
 					th:each="garbage : ${garbageList}"
 					th:value="${garbage.id}"
@@ -36,9 +33,9 @@
 			<label for="FRI" class="btn btn-outline-warning"><input id="FRI" type="checkbox" th:field="*{dayOfWeek}" value="5"/>
 				金</label>
 		</p>
-		<input type="submit" class="btn btn-primary" value="追加" name="add" />
-		<input type="submit" class="btn btn-danger" value="削除" name="del" />
+		<input type="submit" class="btn btn-outline-dark" value="追加" />
 	</form>
-	<a th:href="@{/user}" type="button" class="btn btn-outline-secondary">戻る</a>
+	<a th:href="${/user/delete}" type="button" class="btn btn-outline-secondary">削除</a>
+	<a href="/user" type="button" class="btn btn-outline-secondary">戻る</a>
 </body>
 </html>
