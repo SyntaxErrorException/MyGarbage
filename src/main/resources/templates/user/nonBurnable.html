@@ -14,7 +14,7 @@
 		ゴミの種類：<br />
 		不燃ごみ
 		</p>
-		<p>
+		<p>週：<br />
 			<input id="week1" type="checkbox" name="week" th:field="*{week}" value="1" checked="checked"/>
 				<label for="week1">第1週</label>
 			<input id="week2" type="checkbox" name="week" th:field="*{week}" value="2"/>
@@ -36,7 +36,7 @@
 			<label for="FRI" class="btn btn-outline-warning"><input id="FRI" type="radio" th:field="*{dayOfWeek}" value="5"/>
 				金</label>
 		</p>
-		<input type="submit" class="btn btn-outline-dark" value="登録" />
+		<input type="submit" class="btn btn-outline-dark" value="追加" />
 	</form>
 	<a href="/user" type="button" class="btn btn-outline-secondary">戻る</a>
 </body>
