@@ -12,17 +12,16 @@
 	<form th:action="@{/register}" method="post" th:object="${user}">
 		<p th:errors="*{loginId}" class="alert alert-danger"></p>
 		<p>
-			ID：<br /><input type="text" th:field="*{loginId}" />
+			ID：<br /><input type="text" th:field="*{loginId}" class="form-control" />
 		</p>
 		<p th:errors="*{loginPass}" class="alert alert-danger"></p>
 		<p>
-			パスワード：<br /><input type="password" th:field="*{loginPass}" />
+			パスワード：<br /><input type="password" th:field="*{loginPass}" class="form-control" />
 		</p>
 		<p th:errors="*{name}" class="alert alert-danger"></p>
 		<p>
-			お名前：<br /><input type="text" th:field="*{name}" />
+			お名前：<br /><input type="text" th:field="*{name}" class="form-control" />
 		</p>
-	<!-- 権限のフォームも作る -->
 		<input type="submit" class="submitButton btn btn-outline-dark" value="登録" />
 	<a href="/home" type="button" class="btn btn-outline-secondary">戻る</a>
 	</form>
