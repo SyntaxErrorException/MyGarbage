@@ -56,5 +56,10 @@ public class UserServiceImpl implements UserService {
 		mapper.insertNonBurnable(nonBurnableWaste.getWeek(), nonBurnableWaste.getDayOfWeek(), nonBurnableWaste.getUserId());
 	}
 
+	@Override
+	public void removeSchedule(Schedule schedule) throws Exception {
+		mapper.deleteSchedule(schedule.getUserId(), schedule.getGarbage().getId(), schedule.getDayOfWeek());
+	}
+
 
 }

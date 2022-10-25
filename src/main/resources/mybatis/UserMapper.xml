@@ -97,6 +97,11 @@
 		(#{userId},#{week},#{youbi})
 		</foreach> 
 	</insert>
+	
+	<delete id="deleteSchedule">
+		DELETE FROM schedules 
+		WHERE user_id = #{userId} AND garbage_id = #{garbage} AND day_of_week = #{youbi}
+	</delete>
 
 
 
