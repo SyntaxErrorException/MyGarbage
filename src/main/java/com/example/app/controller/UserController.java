@@ -16,6 +16,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.app.domain.Garbage;
 import com.example.app.domain.NonBurnableWaste;
@@ -164,16 +167,6 @@ public class UserController {
 		return "user/setting";
 	}
 	
-	@PostMapping("/user/setting")
-	public String insert(@ModelAttribute Schedule schedule,Errors errors,@AuthenticationPrincipal User user) throws Exception {
-		if (errors.hasErrors()) {
-			return "redirect:/user/setting";
-		}
-		schedule.setUserId(user.getId());
-		userService.addSchedule(schedule);
-		return "redirect:/user/setting";
-	}
-	
 	@GetMapping("/user/nonBurnable")
 	public String nonBurnable(Model model) {
 		NonBurnableWaste nonBurnableWaste = new NonBurnableWaste();
@@ -191,5 +184,26 @@ public class UserController {
 		userService.addNonBurnable(nonBurnableWaste);
 		return "redirect:/user";
 	}
+	
+	@RequestMapping(value = "/user/setting", params ="add", method=RequestMethod.POST)
+	public String insert(@ModelAttribute Schedule schedule,Errors errors,@AuthenticationPrincipal User user, RedirectAttributes ra) throws Exception {
+		if (errors.hasErrors()) {
+			return "redirect:/user/setting";
+		}
+		schedule.setUserId(user.getId());
+		userService.addSchedule(schedule);
+		ra.addFlashAttribute("msg","予定を追加しました。" );
+		return "redirect:/user/setting";
+	}
+	
+	@RequestMapping(value = "/user/setting", params ="del", method=RequestMethod.POST)
+	public String scheduleDelete(@AuthenticationPrincipal User user, @ModelAttribute Schedule schedule, RedirectAttributes ra) throws Exception {
+		//削除メソッド実行
+		schedule.setUserId(user.getId());
+		userService.removeSchedule(schedule);
+		ra.addFlashAttribute("msg", "予定を削除しました。");
+		return "redirect:/user/setting";
+	}
+	
 
 }
