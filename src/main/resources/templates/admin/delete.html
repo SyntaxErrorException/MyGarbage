@@ -8,12 +8,7 @@
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-	<h1>User Delete Confirm</h1>
-	<p>このユーザを削除します。よろしいですか？</p>
-	<form class="submitButton" th:action="@{/admin/delete/{id}(id=${userInfo.id})}" method="post">
-		<input type="submit" class="btn btn-outline-danger" value="OK" />
-	</form>
-	<a type="button" class="btn btn-outline-secondary" th:href="@{/admin}">キャンセル</a>
+	<h1>Confirm</h1>
 	<th:block th:object="${userInfo}">
 		<table class="design04">
 			<tr>
@@ -28,5 +23,10 @@
 			</tr>
 		</table>
 	</th:block>
+	<p>このユーザを削除します。よろしいですか？</p>
+	<form class="submitButton" th:action="@{/admin/delete/{id}(id=${userInfo.id})}" method="post">
+		<input type="submit" class="btn btn-outline-danger" value="OK" />
+	</form>
+	<a type="button" class="btn btn-outline-secondary" th:href="@{/admin}">キャンセル</a>
 </body>
 </html>
