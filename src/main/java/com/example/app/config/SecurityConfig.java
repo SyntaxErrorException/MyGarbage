@@ -17,22 +17,20 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		// HttpSecurity
 		http.authorizeHttpRequests(req -> {
-			req.antMatchers("/", "/css/**", "/register").permitAll();
+			req.antMatchers("/", "/home", "/register", "/css/**").permitAll();
 			req.antMatchers("/user/**").authenticated();
 			req.anyRequest().hasRole("ADMIN");
 		}).formLogin(form -> {
-			 form.loginPage("/login")
-			 .usernameParameter("loginId")
-			 .passwordParameter("loginPass")
-			 .defaultSuccessUrl("/home")
-			 .failureForwardUrl("/loginFailure")
-			 .permitAll();
-			 })
-			 .logout(logout -> {
-			 logout.invalidateHttpSession(true)
-			 .logoutSuccessUrl("/logoutDone")
-			 .permitAll();
-			 });
+			form.loginPage("/login")
+			.usernameParameter("loginId")
+			.passwordParameter("loginPass")
+			.permitAll();
+		})
+		.logout(logout -> {
+			logout.invalidateHttpSession(true)
+			.logoutSuccessUrl("/logoutDone")
+			.permitAll();
+		});
 
 		return http.build();
 	}

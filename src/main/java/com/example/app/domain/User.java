@@ -20,7 +20,7 @@ public class User implements UserDetails{
 	@Size(min=4, max=45)
 	private String loginId;
 	@NotBlank
-	@Size(min=8, max=45)
+	@Size(min=4, max=45)
 	private String loginPass;
 	@NotBlank
 	@Size(min=1, max=45)
@@ -34,14 +34,12 @@ public class User implements UserDetails{
 				.toList();
 	}
 	@Override
-	public String getPassword() {
-		// TODO 自動生成されたメソッド・スタブ
-		return loginPass;
+	public String getUsername() {
+		return loginId;
 	}
 	@Override
-	public String getUsername() {
-		// TODO 自動生成されたメソッド・スタブ
-		return loginId;
+	public String getPassword() {
+		return loginPass;
 	}
 	@Override
 	public boolean isAccountNonExpired() {

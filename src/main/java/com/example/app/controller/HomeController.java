@@ -3,7 +3,6 @@ package com.example.app.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -20,8 +19,7 @@ public class HomeController {
 	private UserService userService;
 
 	@GetMapping({ "/", "/home" })
-	public String home(@AuthenticationPrincipal User user) {
-		System.out.println(user);
+	public String home() {
 		return "home";
 	}
 	
