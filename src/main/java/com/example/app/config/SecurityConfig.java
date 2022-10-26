@@ -13,25 +13,37 @@ import org.springframework.security.web.firewall.RequestRejectedHandler;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // HttpSecurity‚Ì�Ý’è
-        http.authorizeHttpRequests(req -> {
-            req.antMatchers("/", "/home", "/css/**","/register").permitAll();
-            req.antMatchers("/user/**").authenticated();
-            req.anyRequest().hasRole("ADMIN");
-        }).formLogin();
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		// HttpSecurity
+		http.authorizeHttpRequests(req -> {
+			req.antMatchers("/", "/css/**", "/register").permitAll();
+			req.antMatchers("/user/**").authenticated();
+			req.anyRequest().hasRole("ADMIN");
+		}).formLogin(form -> {
+			 form.loginPage("/login")
+			 .usernameParameter("loginId")
+			 .passwordParameter("loginPass")
+			 .defaultSuccessUrl("/home")
+			 .failureForwardUrl("/loginFailure")
+			 .permitAll();
+			 })
+			 .logout(logout -> {
+			 logout.invalidateHttpSession(true)
+			 .logoutSuccessUrl("/logoutDone")
+			 .permitAll();
+			 });
 
-        return http.build();
-    }
+		return http.build();
+	}
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-    
-    @Bean
-    public RequestRejectedHandler requestRejectedHandler() {
-      return new HttpStatusRequestRejectedHandler();
-    }
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+
+	@Bean
+	public RequestRejectedHandler requestRejectedHandler() {
+		return new HttpStatusRequestRejectedHandler();
+	}
 }

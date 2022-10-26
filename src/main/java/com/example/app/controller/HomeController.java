@@ -21,6 +21,7 @@ public class HomeController {
 
 	@GetMapping({ "/", "/home" })
 	public String home(@AuthenticationPrincipal User user) {
+		System.out.println(user);
 		return "home";
 	}
 	
@@ -39,4 +40,5 @@ public class HomeController {
 		userService.addUser(user);
 		return "redirect:/login";
 	}
+	
 }

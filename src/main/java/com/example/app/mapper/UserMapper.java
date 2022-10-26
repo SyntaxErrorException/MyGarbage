@@ -16,7 +16,6 @@ public interface UserMapper {
 	List<Schedule> showSchedule(int id) throws Exception;
 	void registUser(User user) throws Exception;
 	void insertRole(Integer role) throws Exception;
-	//スケジュール登録メソッド未完成
 	void insertSchedule(Schedule schedule) throws Exception;
 	void insertGarbageId() throws Exception;
 	List<Garbage> selectGarbages() throws Exception;
