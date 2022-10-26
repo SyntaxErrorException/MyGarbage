@@ -21,5 +21,5 @@ public interface UserMapper {
 	void insertGarbageId() throws Exception;
 	List<Garbage> selectGarbages() throws Exception;
 	void insertNonBurnable(@Param("weeks") List<Integer> weeks, @Param("youbi") Integer youbi, @Param("userId") Integer userId) throws Exception;
-	void deleteSchedule(@Param("userId") Integer userId,@Param("garbage")  Integer garbage,@Param("youbi")  Integer youbi) throws Exception;
+	void deleteSchedule(@Param("userId") Integer userId,@Param("garbage")  Integer garbage,@Param("youbi")  List<Integer> youbi) throws Exception;
 }

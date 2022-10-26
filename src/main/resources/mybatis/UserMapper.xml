@@ -33,14 +33,16 @@
 
 	<resultMap id="Map" type="Schedule">
 		<id column="id" property="id" />
-		<result column="day_of_week" property="dayOfWeek" />
 		<result column="type" property="garbage.type" />
 		<association property="nonBurnableWaste">
 			<result column="dow" property="dayOfWeek" />
-			<collection property="week" ofType="Integer">
+			<collection property="week" ofType="Integer" javaType="list">
 				<result column="week" />
 			</collection>
 		</association>
+		<collection property="dayOfWeek" ofType="Integer" javaType="list">
+			<result column="day_of_week" />
+		</collection>
 	</resultMap>
 
 	<select id="showSchedule" parameterType="int" resultMap="Map">
@@ -57,27 +59,33 @@
 		ON schedules.garbage_id = garbages.id
 		LEFT JOIN
 		non_burnable_waste
-		ON non_burnable_waste.user_id = schedules.user_id
+		ON
+		non_burnable_waste.user_id = schedules.user_id
 		WHERE
-		schedules.user_id = #{id}
+		schedules.user_id =
+		#{id}
 	</select>
-	
+
 	<resultMap id="garbages" type="Garbage" autoMapping="true">
 		<id column="id" property="id" />
 	</resultMap>
 
 	<select id="selectGarbages" resultMap="garbages">
-		SELECT * FROM garbages ORDER BY id;
+		SELECT * FROM garbages
+		ORDER BY id;
 	</select>
 
 	<insert id="insertSchedule" parameterType="Schedule">
 		INSERT INTO schedules
-		(user_id,day_of_week,garbage_id)
-		VALUES(#{userId},#{dayOfWeek},#{garbage.id})
+		(user_id,day_of_week,garbage_id) VALUES
+		<foreach collection="dayOfWeek" item="d" separator=",">
+			(#{userId},#{d},#{garbage.id})
+		</foreach>
 	</insert>
-	
+
 	<insert id="insertGarbageId" parameterType="Integer">
-		INSERT INTO schedules (garbage_id) VALUES(#{garbage.id});
+		INSERT INTO schedules
+		(garbage_id) VALUES(#{garbage.id});
 	</insert>
 
 	<insert id="registUser" parameterType="User"
@@ -90,17 +98,19 @@
 		INSERT INTO users_roles
 		(user_id,role_id) VALUES(#{userId},1)
 	</insert>
-	
+
 	<insert id="insertNonBurnable">
 		INSERT INTO non_burnable_waste (user_id,week,day_of_week) VALUES
 		<foreach collection="weeks" item="week" separator=",">
-		(#{userId},#{week},#{youbi})
-		</foreach> 
+			(#{userId},#{week},#{youbi})
+		</foreach>
 	</insert>
-	
+
 	<delete id="deleteSchedule">
-		DELETE FROM schedules 
-		WHERE user_id = #{userId} AND garbage_id = #{garbage} AND day_of_week = #{youbi}
+			DELETE FROM schedules WHERE 
+		<foreach collection="youbi" item="y" separator="OR">
+			(user_id = #{userId} AND garbage_id = #{garbage} AND day_of_week = #{y})
+		</foreach>
 	</delete>
 
 
