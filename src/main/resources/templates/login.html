@@ -8,17 +8,27 @@
 </head>
 <body>
 	<div class="container">
-		<form th:action="@{/login}"method="post" th:object="${user}" class="form-signin">
+		<form th:action="@{/login}" method="post" th:object="${user}"
+			class="form-signin">
 			<h1 class="form-signin-heading">Please log in</h1>
+			<p class="alert alert-danger" th:errors="*{loginId}"></p>
+			<p class="alert alert-danger" th:errors="*{loginPass}"></p>
+			<p class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}"
+				th:each="e : ${#fields.globalErrors()}" th:text="${e}"></p>
+			<p class="alert alert-success" th:if="${logoutMsg}"
+				th:text="${logoutMsg}"></p>
 			<p>
-				<label for="username" class="sr-only">Username</label>
-				<input id="username" type="text" th:field="*{loginId}" class="form-control" autofocus >
+				<label for="username" class="sr-only">ID</label> <input
+					id="username" type="text" placeholder="ID" th:field="*{loginId}"
+					class="form-control" autofocus>
 			</p>
 			<p>
-				<label for="password" class="sr-only">Password</label>
-				<input id="password" type="password" th:field="*{loginPass}" class="form-control">
+				<label for="password" class="sr-only">Password</label> <input
+					id="password" type="password" placeholder="Password" th:field="*{loginPass}"
+					class="form-control">
 			</p>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+			<button class="btn btn-lg btn-primary btn-block " type="submit">Log
+				in</button>
 		</form>
 	</div>
 </body>

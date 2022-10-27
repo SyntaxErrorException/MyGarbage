@@ -26,7 +26,7 @@ public class LoginController {
 	public String loginFailure(@Valid User user, Errors errors,
 			@RequestAttribute("SPRING_SECURITY_LAST_EXCEPTION") AuthenticationException ex, Model model) {
 		if (!errors.hasErrors()) {
-			model.addAttribute("authError", ex.getMessage());
+			errors.reject(ex.getClass().getName());
 		}
 		return "login";
 	}

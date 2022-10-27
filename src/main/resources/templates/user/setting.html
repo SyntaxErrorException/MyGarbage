@@ -10,7 +10,7 @@
 <body>
 	<h1>Setting</h1>
 	<th:block th:if="${msg}">
-		<p  class="alert alert-danger" th:text="${msg}"></p>
+		<p  class="alert alert-success" th:text="${msg}"></p>
 	</th:block>
 	<form class="submitButton" th:action="@{/user/setting}" method="post" th:object="${schedule}">
 		<p>

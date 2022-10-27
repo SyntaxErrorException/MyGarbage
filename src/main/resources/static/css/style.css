@@ -63,16 +63,19 @@ label {
 	display: inline;
 	margin: 5px auto;
 }
+
 .btn-primary {
 	background-color: #69ABDB;
 	border: 2px #69ABDB;
 	color: #333;
 }
+
 .btn-danger {
 	background-color: #f26651;
 	border: 2px #f26651;
 	color: #333;
 }
+
 .setting {
 	text-align: right;
 }
@@ -98,9 +101,11 @@ option[selected][disabled] {
 	display: none;
 }
 
-.form-control {
-	width: 55%;
-}
 .btn-block {
-	width: 44%;
+	width: 80%;
+}
+
+section {
+	width: 100%;
+	margin: auto;
 }

@@ -7,8 +7,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.firewall.HttpStatusRequestRejectedHandler;
-import org.springframework.security.web.firewall.RequestRejectedHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -20,17 +18,12 @@ public class SecurityConfig {
 			req.antMatchers("/", "/home", "/register", "/css/**").permitAll();
 			req.antMatchers("/user/**").authenticated();
 			req.anyRequest().hasRole("ADMIN");
-		}).formLogin(form -> {
-			form.loginPage("/login")
-			.usernameParameter("loginId")
-			.passwordParameter("loginPass")
-			.permitAll();
-		})
-		.logout(logout -> {
-			logout.invalidateHttpSession(true)
-			.logoutSuccessUrl("/logoutDone")
-			.permitAll();
-		});
+		}).formLogin(form -> { form.loginPage("/login") .usernameParameter("loginId")
+		 .passwordParameter("loginPass") .failureForwardUrl("/loginFailure")
+		 .permitAll(); }) 
+		 .logout(logout -> { logout.invalidateHttpSession(true)
+		 .logoutSuccessUrl("/logoutDone") .permitAll(); });
+		 
 
 		return http.build();
 	}
@@ -40,8 +33,9 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public RequestRejectedHandler requestRejectedHandler() {
-		return new HttpStatusRequestRejectedHandler();
-	}
+	/*
+	 * @Bean public RequestRejectedHandler requestRejectedHandler() { return new
+	 * HttpStatusRequestRejectedHandler(); }
+	 */
+
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +21,7 @@ public class User implements UserDetails{
 	@Size(min=4, max=45)
 	private String loginId;
 	@NotBlank
-	@Size(min=4, max=45)
+	@Pattern(regexp="^[a-zA-Z0-9 -/:-@\\[-\\`\\{-\\~]{8,45}$")
 	private String loginPass;
 	@NotBlank
 	@Size(min=1, max=45)
