@@ -17,4 +17,5 @@ public interface UserService extends UserDetailsService{
 	List<Garbage> getGarbageList() throws Exception;
 	void addNonBurnable(NonBurnableWaste nonBurnableWaste) throws Exception;
 	void removeSchedule(Schedule schedule) throws Exception;
+	void removeNonBurnable(NonBurnableWaste nonBurnable) throws Exception;
 }

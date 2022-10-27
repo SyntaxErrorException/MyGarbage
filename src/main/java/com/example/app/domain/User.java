@@ -18,10 +18,10 @@ public class User implements UserDetails{
 	
 	private Integer id;
 	@NotBlank
-	@Size(min=4, max=45)
+	@Pattern(regexp="[a-zA-Z0-9_-]{8,24}", message="IDは半角英数、アンダーバー、ハイフンで8～24文字です。")
 	private String loginId;
 	@NotBlank
-	@Pattern(regexp="^[a-zA-Z0-9 -/:-@\\[-\\`\\{-\\~]{8,45}$")
+	@Pattern(regexp="(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9!?\\\"#$%\\&'()=^~|\\@`[{;+:*]},<.>/?_-]{8,24}")
 	private String loginPass;
 	@NotBlank
 	@Size(min=1, max=45)

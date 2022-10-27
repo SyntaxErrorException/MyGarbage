@@ -9,34 +9,38 @@
 </head>
 <body>
 	<h1>Setting</h1>
-	<form class="submitButton" th:action="@{/user/nonBurnable}" method="post" th:object="${nonBurnableWaste}">
+	<th:block th:if="${msg}">
+		<p class="alert alert-success" th:text="${msg}"></p>
+	</th:block>
+	<form class="submitButton" th:action="@{/user/nonBurnable}"
+		method="post" th:object="${nonBurnableWaste}">
 		<p>
-		ゴミの種類：<br />
-		不燃ごみ
+			ゴミの種類：<br /> 不燃ごみ
 		</p>
-		<p>週：<br />
-			<input id="week1" type="checkbox" name="week" th:field="*{week}" value="1" checked="checked"/>
-				<label for="week1">第1週</label>
-			<input id="week2" type="checkbox" name="week" th:field="*{week}" value="2"/>
-				<label for="week2">第2週</label>
-			<input id="week3" type="checkbox" name="week" th:field="*{week}" value="3"/>
-				<label for="week3">第3週</label>
-			<input id="week4" type="checkbox" name="week" th:field="*{week}" value="4"/>
-				<label for="week4">第4週</label>
+		<p>
+			週：<br /> <input id="week1" type="checkbox" name="week"
+				th:field="*{weeks}" value="1" checked="checked" /> <label
+				for="week1">第1週</label> <input id="week2" type="checkbox"
+				name="week" th:field="*{weeks}" value="2" /> <label for="week2">第2週</label>
+			<input id="week3" type="checkbox" name="week" th:field="*{weeks}"
+				value="3" /> <label for="week3">第3週</label> <input id="week4"
+				type="checkbox" name="week" th:field="*{weeks}" value="4" /> <label
+				for="week4">第4週</label>
 		</p>
-		<p>曜日：<br />
-			<label for="MON" class="btn btn-outline-primary"><input id="MON" type="radio" th:field="*{dayOfWeek}" value="1"/>
-				月</label>
-			<label for="TUE" class="btn btn-outline-secondary"><input id="TUE" type="radio" th:field="*{dayOfWeek}" value="2"/>
-				火</label>
-			<label for="WED" class="btn btn-outline-success"><input id="WED" type="radio" th:field="*{dayOfWeek}" value="3"/>
-				水</label>
-			<label for="THU" class="btn btn-outline-danger"><input id="THU" type="radio" th:field="*{dayOfWeek}" value="4"/>
-				木</label>
-			<label for="FRI" class="btn btn-outline-warning"><input id="FRI" type="radio" th:field="*{dayOfWeek}" value="5"/>
-				金</label>
+		<p>
+			曜日：<br /> <label for="MON" class="btn btn-outline-primary"><input
+				id="MON" type="radio" th:field="*{dayOfWeek}" value="1" /> 月</label> <label
+				for="TUE" class="btn btn-outline-secondary"><input id="TUE"
+				type="radio" th:field="*{dayOfWeek}" value="2" /> 火</label> <label for="WED"
+				class="btn btn-outline-success"><input id="WED" type="radio"
+				th:field="*{dayOfWeek}" value="3" /> 水</label> <label for="THU"
+				class="btn btn-outline-danger"><input id="THU" type="radio"
+				th:field="*{dayOfWeek}" value="4" /> 木</label> <label for="FRI"
+				class="btn btn-outline-warning"><input id="FRI" type="radio"
+				th:field="*{dayOfWeek}" value="5" /> 金</label>
 		</p>
-		<input type="submit" class="btn btn-outline-dark" value="追加" />
+		<input type="submit" class="btn btn-outline-dark" value="追加" /> <input
+			type="submit" class="btn btn-outline-danger" value="削除" name="del" />
 	</form>
 	<a href="/user" type="button" class="btn btn-outline-secondary">戻る</a>
 </body>

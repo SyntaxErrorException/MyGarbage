@@ -36,7 +36,7 @@
 		<result column="type" property="garbage.type" />
 		<association property="nonBurnableWaste">
 			<result column="dow" property="dayOfWeek" />
-			<collection property="week" ofType="Integer" javaType="list">
+			<collection property="weeks" ofType="Integer" javaType="list">
 				<result column="week" />
 			</collection>
 		</association>
@@ -110,6 +110,13 @@
 			DELETE FROM schedules WHERE 
 		<foreach collection="youbi" item="y" separator="OR">
 			(user_id = #{userId} AND garbage_id = #{garbage} AND day_of_week = #{y})
+		</foreach>
+	</delete>
+	
+	<delete id="deleteNonBurnable">
+			DELETE FROM non_burnable_waste WHERE 
+		<foreach collection="weeks" item="week" separator="OR">
+			(user_id = #{userId} AND week = #{week} AND day_of_week = #{youbi})
 		</foreach>
 	</delete>
 

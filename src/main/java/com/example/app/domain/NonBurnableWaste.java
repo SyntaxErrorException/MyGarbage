@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class NonBurnableWaste {
 	private Integer userId;
-	private List<Integer> week;
+	private List<Integer> weeks;
 	private Integer dayOfWeek;
 }

@@ -82,7 +82,7 @@ public class UserController {
 		Integer Question = 0;// ?曜日
 		NonBurnableWaste nbw = schedules.get(0).getNonBurnableWaste();
 		if (nbw != null) {
-			for (Integer i : nbw.getWeek()) {
+			for (Integer i : nbw.getWeeks()) {
 				n.add(i);
 			}
 			Question = nbw.getDayOfWeek();
@@ -171,49 +171,70 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/user/setting", params = "add", method = RequestMethod.POST)
-	public String insert(@ModelAttribute Schedule schedule, Errors errors, @AuthenticationPrincipal User user,
+	public String insertSchedule(@ModelAttribute Schedule schedule, Errors errors, @AuthenticationPrincipal User user,
 			RedirectAttributes ra) throws Exception {
 		if (errors.hasErrors()) {
 			return "redirect:/user/setting";
 		}
 		schedule.setUserId(user.getId());
 		userService.addSchedule(schedule);
-		ra.addFlashAttribute("msg", "予定を追加しました。");
+		ra.addFlashAttribute("msg", createMsg(schedule) + "の予定を追加しました。");
 		return "redirect:/user/setting";
 	}
 	
 	@RequestMapping(value = "/user/setting", params = "del", method = RequestMethod.POST)
-	public String scheduleDelete(@AuthenticationPrincipal User user, @ModelAttribute Schedule schedule,
+	public String deleteSchedule(@AuthenticationPrincipal User user, @ModelAttribute Schedule schedule,
 			RedirectAttributes ra) throws Exception {
 		// scheduleの中身を確認する
-		System.out.println("----デバッグ用----");
+		System.out.println("----デバッグ用----scheduleDelete");
 		List<Integer> s = schedule.getDayOfWeek();
 		s.forEach(t->System.out.println(t));
 		
 		schedule.setUserId(user.getId());
 		userService.removeSchedule(schedule);
-		ra.addFlashAttribute("msg", "予定を削除しました。");
+		ra.addFlashAttribute("msg", createMsg(schedule) + "の予定を削除しました。");
+		
 		return "redirect:/user/setting";
 	}
 	
 	@GetMapping("/user/nonBurnable")
-	public String nonBurnable(Model model) {
+	public String settingNonBurnable(Model model) {
 		NonBurnableWaste nonBurnableWaste = new NonBurnableWaste();
 		model.addAttribute("nonBurnableWaste", nonBurnableWaste);
 		return "user/nonBurnable";
 	}
 	
 	@PostMapping("/user/nonBurnable")
-	public String nonBurnablePost(@ModelAttribute NonBurnableWaste nonBurnableWaste, Errors errors,
-			@AuthenticationPrincipal User user) throws Exception {
+	public String addNonBurnable(@ModelAttribute NonBurnableWaste nonBurnableWaste, Errors errors,
+			@AuthenticationPrincipal User user,RedirectAttributes ra) throws Exception {
 		if (errors.hasErrors()) {
 			return "redirect:/user/nonBurnable";
 		}
 		nonBurnableWaste.setUserId(user.getId());
 		userService.addNonBurnable(nonBurnableWaste);
-		return "redirect:/user";
+		ra.addFlashAttribute("msg", "不燃ごみの予定を追加しました。");
+		return "redirect:/user/nonBurnable";
+	}
+	
+	@RequestMapping(value = "/user/nonBurnable", params = "del", method = RequestMethod.POST)
+	public String removeNonBurnable(@ModelAttribute NonBurnableWaste nonBurnableWaste, Errors errors,
+			@AuthenticationPrincipal User user, RedirectAttributes ra) throws Exception {
+		if (errors.hasErrors()) {
+			return "redirect:/user/nonBurnable";
+		}
+		nonBurnableWaste.setUserId(user.getId());
+		userService.removeNonBurnable(nonBurnableWaste);
+		ra.addFlashAttribute("msg", "不燃ごみの予定を削除しました。");
+		return "redirect:/user/nonBurnable";
 	}
 
+	private String createMsg(Schedule schedule) throws Exception {
+		List<Garbage> garbages = userService.getGarbageList();
+		Integer i  = schedule.getGarbage().getId();
+		System.out.println("----デバッグ用----createMsg");
+		System.out.println("garbages.id:" + i);
+		return garbages.get(i-1).getType();
+	}
 
 
 

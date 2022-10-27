@@ -18,16 +18,16 @@
 			<p class="alert alert-success" th:if="${logoutMsg}"
 				th:text="${logoutMsg}"></p>
 			<div class="child-container">
-			<p>
-				<input id="username" type="text" placeholder="ID" th:field="*{loginId}"
-					class="form-control" autofocus>
-			</p>
-			<p>
-				<input id="password" type="password" placeholder="Password" th:field="*{loginPass}"
-					class="form-control">
-			</p>
-			<button class="btn btn-lg btn-primary btn-block " type="submit">Log
-				in</button>
+				<p>
+					<input id="username" type="text" placeholder="ID"
+						th:field="*{loginId}" class="form-control" autofocus>
+				</p>
+				<p>
+					<input id="password" type="password" placeholder="Password"
+						th:field="*{loginPass}" class="form-control" title="記号も使えます">
+				</p>
+				<button class="btn btn-lg btn-primary btn-block " type="submit">Log
+					in</button>
 			</div>
 		</form>
 	</div>
