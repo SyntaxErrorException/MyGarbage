@@ -105,7 +105,12 @@ option[selected][disabled] {
 	width: 80%;
 }
 
-section {
-	width: 100%;
+.container {
+	width: 90%;
+	margin: auto;
+}
+
+.child-container {
+	width: 90%;
 	margin: auto;
 }
