@@ -227,7 +227,13 @@ public class UserController {
 		ra.addFlashAttribute("msg", "不燃ごみの予定を削除しました。");
 		return "redirect:/user/nonBurnable";
 	}
-
+	
+	@RequestMapping(value = "/user/nonBurnable", params = "allDel", method = RequestMethod.POST)
+	public String deleteAllSchedules(@AuthenticationPrincipal User user) throws Exception {
+		userService.removeAll(user.getId());
+		return "redirect:/user/setting";
+	}
+	
 	private String createMsg(Schedule schedule) throws Exception {
 		List<Garbage> garbages = userService.getGarbageList();
 		Integer i  = schedule.getGarbage().getId();
@@ -235,7 +241,8 @@ public class UserController {
 		System.out.println("garbages.id:" + i);
 		return garbages.get(i-1).getType();
 	}
-
+	
+	
 
 
 

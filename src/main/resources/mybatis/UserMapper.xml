@@ -36,11 +36,13 @@
 		<result column="type" property="garbage.type" />
 		<association property="nonBurnableWaste">
 			<result column="dow" property="dayOfWeek" />
-			<collection property="weeks" ofType="Integer" javaType="list">
+			<collection property="weeks" ofType="Integer"
+				javaType="list">
 				<result column="week" />
 			</collection>
 		</association>
-		<collection property="dayOfWeek" ofType="Integer" javaType="list">
+		<collection property="dayOfWeek" ofType="Integer"
+			javaType="list">
 			<result column="day_of_week" />
 		</collection>
 	</resultMap>
@@ -107,19 +109,25 @@
 	</insert>
 
 	<delete id="deleteSchedule">
-			DELETE FROM schedules WHERE 
+		DELETE FROM schedules WHERE
 		<foreach collection="youbi" item="y" separator="OR">
-			(user_id = #{userId} AND garbage_id = #{garbage} AND day_of_week = #{y})
-		</foreach>
-	</delete>
-	
-	<delete id="deleteNonBurnable">
-			DELETE FROM non_burnable_waste WHERE 
-		<foreach collection="weeks" item="week" separator="OR">
-			(user_id = #{userId} AND week = #{week} AND day_of_week = #{youbi})
+			(user_id =
+			#{userId} AND garbage_id = #{garbage} AND day_of_week = #{y})
 		</foreach>
 	</delete>
 
+	<delete id="deleteNonBurnable">
+		DELETE FROM non_burnable_waste WHERE
+		<foreach collection="weeks" item="week" separator="OR">
+			(user_id =
+			#{userId} AND week = #{week} AND day_of_week = #{youbi})
+		</foreach>
+	</delete>
+	
+	<delete id="deleteAll">
+	DELETE FROM schedules JOIN non_burnable_waste ON schedules.user_id = 
+	non_burnable_waste = user_id WHERE user_id = #{userId}
+	</delete>
 
 
 </mapper>

@@ -18,7 +18,7 @@ public class User implements UserDetails{
 	
 	private Integer id;
 	@NotBlank
-	@Pattern(regexp="[a-zA-Z0-9_-]{8,24}", message="IDは半角英数、アンダーバー、ハイフンで8～24文字です。")
+	@Pattern(regexp="[a-zA-Z0-9_-]{4,24}", message="IDは半角英数、アンダーバー、ハイフンで8～24文字です。")
 	private String loginId;
 	@NotBlank
 	@Pattern(regexp="(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9!?\\\"#$%\\&'()=^~|\\@`[{;+:*]},<.>/?_-]{8,24}")

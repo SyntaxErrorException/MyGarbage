@@ -23,19 +23,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return mapper.selectByLoginId(username);//userNameだとエラーになる
+		return mapper.selectByLoginId(username);// userNameだとエラーになる
 	}
 
 	@Override
 	public List<Schedule> getSchedule(int id) throws Exception {
 		return mapper.showSchedule(id);
 	}
-	
-	//スケジュール登録メソッド未完成
+
+	// スケジュール登録メソッド未完成
 	@Override
 	public void addSchedule(Schedule schedule) throws Exception {
 		mapper.insertSchedule(schedule);
-		//mapper.insertGarbageId(schedule.getId());
+		// mapper.insertGarbageId(schedule.getId());
 	}
 
 	@Override
@@ -53,7 +53,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void addNonBurnable(NonBurnableWaste nonBurnableWaste) throws Exception {
-		mapper.insertNonBurnable(nonBurnableWaste.getWeeks(), nonBurnableWaste.getDayOfWeek(), nonBurnableWaste.getUserId());
+		mapper.insertNonBurnable(nonBurnableWaste.getWeeks(), nonBurnableWaste.getDayOfWeek(),
+				nonBurnableWaste.getUserId());
 	}
 
 	@Override
@@ -66,5 +67,9 @@ public class UserServiceImpl implements UserService {
 		mapper.deleteNonBurnable(nonBurnable.getUserId(), nonBurnable.getWeeks(), nonBurnable.getDayOfWeek());
 	}
 
+	@Override
+	public void removeAll(Integer userId) throws Exception {
+		mapper.deleteAll(userId);
+	}
 
 }
