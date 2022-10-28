@@ -38,6 +38,5 @@ public class SecurityConfig {
 	
 	 @Bean public RequestRejectedHandler requestRejectedHandler() { return new
 	 HttpStatusRequestRejectedHandler(); }
-	 
 
 }

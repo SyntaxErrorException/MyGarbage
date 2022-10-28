@@ -193,7 +193,6 @@ public class UserController {
 		schedule.setUserId(user.getId());
 		userService.removeSchedule(schedule);
 		ra.addFlashAttribute("msg", createMsg(schedule) + "の予定を削除しました。");
-		
 		return "redirect:/user/setting";
 	}
 	
@@ -228,11 +227,11 @@ public class UserController {
 		return "redirect:/user/nonBurnable";
 	}
 	
-	@RequestMapping(value = "/user/setting", params = "allDel", method = RequestMethod.POST)
+	@RequestMapping(value = "/user", params = "allDel", method = RequestMethod.POST)
 	public String deleteAllSchedules(@AuthenticationPrincipal User user,RedirectAttributes ra) throws Exception {
 		userService.removeAll(user.getId());
 		ra.addFlashAttribute("msg", "ゴミ出しスケジュールをすべて削除しました。");
-		return "redirect:/user/setting";
+		return "redirect:/user";
 	}
 	
 	private String createMsg(Schedule schedule) throws Exception {

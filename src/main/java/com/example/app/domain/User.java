@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
+import validation.RegisterGroup;
 
 @Data
 public class User implements UserDetails{
@@ -23,8 +24,8 @@ public class User implements UserDetails{
 	@NotBlank
 	@Pattern(regexp="(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9!?\\\"#$%\\&'()=^~|\\@`[{;+:*]},<.>/?_-]{8,24}")
 	private String loginPass;
-	@NotBlank
-	@Size(min=1, max=45)
+	@NotBlank(groups={RegisterGroup.class})
+	@Size(min=1, max=45,groups={RegisterGroup.class})
 	private String name;
 	private List<String> roles;
 	

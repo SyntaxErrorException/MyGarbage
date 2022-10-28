@@ -25,7 +25,9 @@ public class LoginController {
 	@PostMapping("/loginFailure")
 	public String loginFailure(@Valid User user, Errors errors,
 			@RequestAttribute("SPRING_SECURITY_LAST_EXCEPTION") AuthenticationException ex, Model model) {
+		System.out.println(1111);
 		if (!errors.hasErrors()) {
+			System.out.println(2222);
 			errors.reject(ex.getClass().getName());
 		}
 		return "login";

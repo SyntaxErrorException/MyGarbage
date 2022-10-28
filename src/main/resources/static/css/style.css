@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 html {
-	max-width: 65ch;
+	max-width: 80ch;
 	/*padding: 3em 1em;*/
 	margin: auto;
 	line-height: 1.75;
@@ -31,7 +31,7 @@ label {
 	text-align: left;
 	border-collapse: collapse;
 	border-spacing: 0;
-	margin: 5px 0px 5px 0px;
+	margin: 5px auto;
 	border: solid 1px #778ca3;
 }
 
@@ -106,11 +106,17 @@ option[selected][disabled] {
 }
 
 .container {
-	width: 90%;
+	width: 80%;
 	margin: auto;
 }
-
 .child-container {
-	width: 90%;
+	width: 100%;
 	margin: auto;
+	display: flex;
+	justify-content: center;
+}
+
+.midashi {
+	position: sticky;
+	top: 0;
 }

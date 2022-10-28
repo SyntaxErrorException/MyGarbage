@@ -123,9 +123,15 @@
 			#{userId} AND week = #{week} AND day_of_week = #{youbi})
 		</foreach>
 	</delete>
+
+	<delete id="deleteNonBurnableNoCheck">
+		DELETE FROM non_burnable_waste WHERE user_id = #{userId}
+	</delete>
 	
 	<delete id="deleteAll">
-	DELETE FROM schedules WHERE schedules.user_id = #{userId}
+		DELETE schedules,non_burnable_waste FROM schedules LEFT JOIN non_burnable_waste
+		ON schedules.user_id = non_burnable_waste.user_id WHERE
+		schedules.user_id = #{1};
 	</delete>
 
 

@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
 		return mapper.showSchedule(id);
 	}
 
-	// スケジュール登録メソッド未完成
 	@Override
 	public void addSchedule(Schedule schedule) throws Exception {
 		mapper.insertSchedule(schedule);
@@ -64,6 +63,11 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void removeNonBurnable(NonBurnableWaste nonBurnable) throws Exception {
+		System.out.println("----デバッグ用----\n" + nonBurnable.getUserId());
+		if (nonBurnable.getWeeks().isEmpty() && nonBurnable.getDayOfWeek() == null) {
+			mapper.deleteNonBurnableNoCheck(nonBurnable.getUserId());
+			return;
+		}
 		mapper.deleteNonBurnable(nonBurnable.getUserId(), nonBurnable.getWeeks(), nonBurnable.getDayOfWeek());
 	}
 
@@ -71,5 +75,7 @@ public class UserServiceImpl implements UserService {
 	public void removeAll(Integer userId) throws Exception {
 		mapper.deleteAll(userId);
 	}
+	
+	
 
 }
