@@ -125,8 +125,7 @@
 	</delete>
 	
 	<delete id="deleteAll">
-	DELETE FROM schedules JOIN non_burnable_waste ON schedules.user_id = 
-	non_burnable_waste = user_id WHERE user_id = #{userId}
+	DELETE FROM schedules WHERE schedules.user_id = #{userId}
 	</delete>
 
 

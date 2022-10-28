@@ -228,9 +228,10 @@ public class UserController {
 		return "redirect:/user/nonBurnable";
 	}
 	
-	@RequestMapping(value = "/user/nonBurnable", params = "allDel", method = RequestMethod.POST)
-	public String deleteAllSchedules(@AuthenticationPrincipal User user) throws Exception {
+	@RequestMapping(value = "/user/setting", params = "allDel", method = RequestMethod.POST)
+	public String deleteAllSchedules(@AuthenticationPrincipal User user,RedirectAttributes ra) throws Exception {
 		userService.removeAll(user.getId());
+		ra.addFlashAttribute("msg", "ゴミ出しスケジュールをすべて削除しました。");
 		return "redirect:/user/setting";
 	}
 	
