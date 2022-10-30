@@ -47,14 +47,19 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){ 
 		const button = document.getElementById('button');
-		button.disabled = true;
 		const radio_btns = document.querySelectorAll('input[type="radio"]');
-		for (let target of radio_btns) {
-			target.addEventListener('change', () => {
-				button.disabled = false;
+		const check_bxs = document.querySelectorAll('input[type="checkbox"]');
+		button.disabled = true;
+		for (let radio of radio_btns) {
+			radio.addEventListener('change', () => {
+				for (let check of check_bxs) {
+					if (check.checked && radio.checked) {
+						button.disabled = false;	
+					}
+				}
 			});
 		}
-	}, false);
+}, false);
 </script>
 </html>
 
