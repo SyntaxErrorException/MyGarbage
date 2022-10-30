@@ -1,11 +1,10 @@
 package com.example.app.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.app.domain.User;
 import com.example.app.service.AdminService;
 import com.example.app.service.UserService;
+
+import validation.RegisterGroup;
 
 @Controller
 public class HomeController {
@@ -35,7 +36,7 @@ public class HomeController {
 	}
 
 	@PostMapping("register")
-	public String registerPost(@Valid @ModelAttribute User user, Errors errors, RedirectAttributes ra)
+	public String registerPost(@Validated(RegisterGroup.class) @ModelAttribute User user, Errors errors, RedirectAttributes ra)
 			throws Exception {
 		if (errors.hasErrors()) {
 			return "redirect:/register";
