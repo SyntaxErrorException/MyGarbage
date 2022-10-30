@@ -46,19 +46,19 @@
 </body>
 <script>
 document.addEventListener('DOMContentLoaded', function(){ 
-		const button = document.getElementById('button');
-		const radio_btns = document.querySelectorAll('input[type="radio"]');
-		const check_bxs = document.querySelectorAll('input[type="checkbox"]');
-		button.disabled = true;
-		for (let radio of radio_btns) {
-			radio.addEventListener('change', () => {
-				for (let check of check_bxs) {
-					if (check.checked && radio.checked) {
-						button.disabled = false;	
-					}
+	const button = document.getElementById('button');
+	const radio_btns = document.querySelectorAll('input[type="radio"]');
+	const check_bxs = document.querySelectorAll('input[type="checkbox"]');
+	button.disabled = true;
+	for (let radio of radio_btns) {
+		radio.addEventListener('change', () => {
+			for (let check of check_bxs) {
+				if (check.checked && radio.checked) {
+					button.disabled = false;	
 				}
-			});
-		}
+			}
+		});
+	}
 }, false);
 </script>
 </html>
