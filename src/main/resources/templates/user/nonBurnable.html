@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function(){
 	for (let radio of radio_btns) {
 		radio.addEventListener('change', () => {
 			for (let check of check_bxs) {
-				if (check.checked && radio.checked) {
+				if (check.checked) {
 					button.disabled = false;	
 				}
 			}
