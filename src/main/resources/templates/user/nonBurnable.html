@@ -39,7 +39,7 @@
 				for="FRI" class="btn btn-outline-warning"><input id="FRI"
 				type="radio" th:field="*{dayOfWeek}" value="5" /> 金</label>
 		</p>
-		<input id="button" type="submit" class="btn btn-outline-dark" value="追加"/>
+		<input id="button" type="submit" class="btn btn-outline-dark" value="追加" disabled />
 		<input type="submit" class="btn btn-outline-danger" value="削除" name="del" />
 	</form>
 	<a href="/user" type="button" class="btn btn-outline-secondary">戻る</a>
@@ -47,19 +47,36 @@
 <script>
 document.addEventListener('DOMContentLoaded', function(){ 
 	const button = document.getElementById('button');
-	const radio_btns = document.querySelectorAll('input[type="radio"]');
-	const check_bxs = document.querySelectorAll('input[type="checkbox"]');
-	button.disabled = true;
-	for (let radio of radio_btns) {
-		radio.addEventListener('change', () => {
-			for (let check of check_bxs) {
-				if (check.checked) {
-					button.disabled = false;	
+	const radio_buttons = document.querySelectorAll('input[type="radio"]');
+	const check_boxes = document.querySelectorAll('input[type="checkbox"]');
+	let check_count = 0;
+	let radio_button = false;
+	for (let box of check_boxes) {
+		box.addEventListener('change',() => {
+			if (box.checked) {
+				check_count++;
+				if (radio_button == true) {
+					button.disabled = false;
+				}
+			} else {
+				check_count--;
+				if (check_count == 0){
+					button.disabled = true;
 				}
 			}
 		});
 	}
-}, false);
+	for (let radio of radio_buttons) {
+		radio.addEventListener('change', () => {
+			radio_button = true;
+			if (check_count > 0) {
+				button.disabled = false;
+			} else {
+				button.disabled = true;
+			}
+		});
+	}
+});
 </script>
 </html>
 
