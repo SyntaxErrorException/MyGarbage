@@ -25,22 +25,45 @@
 			</select>
 		</p>
 		<p>曜日：<br />
-			<label for="MON" class="btn btn-outline-primary"><input id="MON" type="checkbox" th:field="*{dayOfWeek}" value="1"/>
+			<label for="MON" class="btn btn-outline-primary">
+			<input id="MON" type="checkbox" th:field="*{dayOfWeek}" value="1"/>
 				月</label>
-			<label for="TUE" class="btn btn-outline-secondary"><input id="TUE" type="checkbox" th:field="*{dayOfWeek}" value="2"/>
+			<label for="TUE" class="btn btn-outline-secondary">
+			<input id="TUE" type="checkbox" th:field="*{dayOfWeek}" value="2"/>
 				火</label>
-			<label for="WED" class="btn btn-outline-success"><input id="WED" type="checkbox" th:field="*{dayOfWeek}" value="3"/>
+			<label for="WED" class="btn btn-outline-success">
+			<input id="WED" type="checkbox" th:field="*{dayOfWeek}" value="3"/>
 				水</label>
-			<label for="THU" class="btn btn-outline-danger"><input id="THU" type="checkbox" th:field="*{dayOfWeek}" value="4"/>
+			<label for="THU" class="btn btn-outline-danger">
+			<input id="THU" type="checkbox" th:field="*{dayOfWeek}" value="4"/>
 				木</label>
-			<label for="FRI" class="btn btn-outline-warning"><input id="FRI" type="checkbox" th:field="*{dayOfWeek}" value="5"/>
+			<label for="FRI" class="btn btn-outline-warning">
+			<input id="FRI" type="checkbox" th:field="*{dayOfWeek}" value="5"/>
 				金</label>
 		</p>
-		<input type="submit" class="btn btn-outline-dark" value="追加" name="add" />
+		<input id="button" type="submit" class="btn btn-outline-dark" value="追加" name="add" disabled/>
 		<input type="submit" class="btn btn-outline-danger" value="削除" name="del" />
 	</form>
 	<a th:href="@{/user}" type="button" class="btn btn-outline-secondary">戻る</a>
-	<!-- ここからJavaScript -->
-	
 </body>
+<script>
+document.addEventListener('DOMContentLoaded', function(){ 
+	const button = document.getElementById('button');
+	const check_boxes = document.querySelectorAll('input[type="checkbox"]');
+	let check_count = 0;
+		for (let box of check_boxes) {
+			box.addEventListener('change',() => {
+				if (box.checked) {
+					check_count++;
+					button.disabled = false;	
+				} else {
+					check_count--;
+					if (check_count == 0) {
+						button.disabled = true;
+					}
+				}
+			});
+		}
+}, false);
+</script>
 </html>

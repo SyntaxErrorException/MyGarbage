@@ -93,8 +93,7 @@ select {
 	height: 40px;
 	width: 300px;
 	position: relative;
-	background: #cfcedb url({https://ginneko-atelier.com}/assets/arrow.svg)
-		no-repeat right 10px center/16px auto;
+	background: #cfcedb;
 }
 
 option[selected][disabled] {
