@@ -7,27 +7,30 @@
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-	<h1>Admin page</h1>
-	<!-- メッセージ表示 -->
-	<th:block th:if="${msg}">
-		<p class="alert alert-success">[[${msg}]]</p>
-	</th:block>
-	<form class="submitButton" th:action="@{/logout}" method="post">
-		<input type="submit" class="btn btn-outline-dark" value="ログアウト" />
-	</form>
-	<a type="button" class="btn btn-outline-secondary" href="/home">戻る</a>
-	<table class="design04">
-		<tr>
-			<th>ID</th>
-			<th>ログインID</th>
-			<th>名前</th>
-			<th>操作</th>
-		<tr th:each="u : ${userList}">
-			<td th:text="${u.id}"></td>
-			<td th:text="${u.loginId}"></td>
-			<td th:text="${u.name}"></td>
-			<td><a th:href="@{/admin/delete/{id}(id=${u.id})}">削除</a></td>
-		</tr>
-	</table>
+	<div class="container">
+		<h1>Admin page</h1>
+		<!-- メッセージ表示 -->
+		<th:block th:if="${msg}">
+			<p class="alert alert-success">[[${msg}]]</p>
+		</th:block>
+		<form class="submitButton" th:action="@{/logout}" method="post">
+		<input type="submit" class="btn btn-outline-dark" value="ログアウト" name="logout" />
+		<a th:href="@{/home}" type="button" class="btn btn-outline-secondary">戻る</a>
+		</form>
+		<hr />
+		<table class="design04">
+			<tr>
+				<th>ID</th>
+				<th>ログインID</th>
+				<th>名前</th>
+				<th>操作</th>
+			<tr th:each="u : ${userList}">
+				<td th:text="${u.id}"></td>
+				<td th:text="${u.loginId}"></td>
+				<td th:text="${u.name}"></td>
+				<td><a th:href="@{/admin/delete/{id}(id=${u.id})}">削除</a></td>
+			</tr>
+		</table>
+	</div>
 </body>
 </html>

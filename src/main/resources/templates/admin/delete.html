@@ -8,25 +8,27 @@
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-	<h1>Confirm</h1>
-	<p>このユーザを削除します。よろしいですか？</p>
-	<form class="submitButton" th:action="@{/admin/delete/{id}(id=${userInfo.id})}" method="post">
-		<input type="submit" class="btn btn-outline-danger" value="OK" />
-	</form>
-	<a type="button" class="btn btn-outline-secondary" th:href="@{/admin}">キャンセル</a>
-	<th:block th:object="${userInfo}">
-		<table class="design04">
-			<tr>
-				<th>ID</th>
-				<th>ログインID</th>
-				<th>ユーザ名</th>
-			</tr>
-			<tr>
-				<td th:text="*{id}"></td>
-				<td th:text="*{loginId}"></td>
-				<td th:text="*{name}"></td>
-			</tr>
-		</table>
-	</th:block>
+	<div class="container">
+		<h1>Confirm</h1>
+		<p>このユーザを削除します。よろしいですか？</p>
+		<form class="submitButton" th:action="@{/admin/delete/{id}(id=${userInfo.id})}" method="post">
+			<input type="submit" class="btn btn-outline-danger" value="OK" />
+		</form>
+		<a type="button" class="btn btn-outline-secondary" th:href="@{/admin}">キャンセル</a>
+		<th:block th:object="${userInfo}">
+			<table class="design04">
+				<tr>
+					<th>ID</th>
+					<th>ログインID</th>
+					<th>ユーザ名</th>
+				</tr>
+				<tr>
+					<td th:text="*{id}"></td>
+					<td th:text="*{loginId}"></td>
+					<td th:text="*{name}"></td>
+				</tr>
+			</table>
+		</th:block>
+	</div>
 </body>
 </html>

@@ -8,67 +8,113 @@
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
-	<h1>Setting</h1>
-	<th:block th:if="${msg}">
-		<p  class="alert alert-success" th:text="${msg}"></p>
-	</th:block>
-	<form class="submitButton" th:action="@{/user/setting}" method="post" th:object="${schedule}">
-		<p>
-		ゴミの種類：<br />
-			<select th:field="*{garbage.id}" class="form-select">
-				<option value="" disabled>--選択してください--</option>
-				<option 
-					th:each="garbage : ${garbageList}"
-					th:value="${garbage.id}"
-					th:text="${garbage.type}">
-				</option>
-			</select>
-		</p>
-		<p>曜日：<br />
-			<label for="MON" class="btn btn-outline-primary">
-			<input id="MON" type="checkbox" th:field="*{dayOfWeek}" value="1"/>
-				月</label>
-			<label for="TUE" class="btn btn-outline-secondary">
-			<input id="TUE" type="checkbox" th:field="*{dayOfWeek}" value="2"/>
-				火</label>
-			<label for="WED" class="btn btn-outline-success">
-			<input id="WED" type="checkbox" th:field="*{dayOfWeek}" value="3"/>
-				水</label>
-			<label for="THU" class="btn btn-outline-danger">
-			<input id="THU" type="checkbox" th:field="*{dayOfWeek}" value="4"/>
-				木</label>
-			<label for="FRI" class="btn btn-outline-warning">
-			<input id="FRI" type="checkbox" th:field="*{dayOfWeek}" value="5"/>
-				金</label>
-		</p>
-		<input id="button" type="submit" class="btn btn-outline-dark" value="追加" name="add" disabled/>
-		<input type="submit" class="btn btn-outline-danger" value="削除" name="del" />
-		<input id="reset_button" type="reset" class="btn btn-outline-info" value="リセット" />
-	</form>
-	<a th:href="@{/user}" type="button" class="btn btn-outline-secondary">戻る</a>
+	<div class="container">
+		<h1>Setting</h1>
+		<th:block th:if="${msg}">
+			<p  class="alert alert-success" th:text="${msg}"></p>
+		</th:block>
+		<form class="submitButton" th:action="@{/user/setting}" method="post" th:object="${schedule}">
+			<p>
+			ゴミの種類：<br />
+				<select id="garbage-list" th:field="*{garbage.id}" class="form-select">
+					<option value="0" selected>--選択してください--</option>
+					<option 
+						th:each="garbage : ${garbageList}"
+						th:value="${garbage.id}"
+						th:text="${garbage.type}">
+					</option>
+				</select>
+			</p>
+			<p>曜日：<br />
+				<label for="MON" class="btn btn-outline-primary">
+				<input id="MON" type="checkbox" th:field="*{dayOfWeek}" value="1"/>
+					月</label>
+				<label for="TUE" class="btn btn-outline-secondary">
+				<input id="TUE" type="checkbox" th:field="*{dayOfWeek}" value="2"/>
+					火</label>
+				<label for="WED" class="btn btn-outline-success">
+				<input id="WED" type="checkbox" th:field="*{dayOfWeek}" value="3"/>
+					水</label>
+				<label for="THU" class="btn btn-outline-danger">
+				<input id="THU" type="checkbox" th:field="*{dayOfWeek}" value="4"/>
+					木</label>
+				<label for="FRI" class="btn btn-outline-warning">
+				<input id="FRI" type="checkbox" th:field="*{dayOfWeek}" value="5"/>
+					金</label>
+			</p>
+			<input id="button" type="submit" class="btn btn-outline-dark" value="追加" name="add" disabled/>
+			<input id="delete-button" type="submit" class="btn btn-outline-danger" value="削除" name="del" disabled/>
+			<input id="reset-button" type="reset" class="btn btn-outline-info" value="リセット" />
+		</form>
+		<a th:href="@{/user}" type="button" class="btn btn-outline-secondary">戻る</a>
+	</div>
 </body>
 <script>
-document.addEventListener('DOMContentLoaded', function(){ 
-	const button = document.getElementById('button');
-	const check_boxes = document.querySelectorAll('input[type="checkbox"]');
-	let check_count = 0;
-		for (let box of check_boxes) {
-			box.addEventListener('change',() => {
-				if (box.checked) {
-					check_count++;
-					button.disabled = false;	
-				} else {
-					check_count--;
-					if (check_count == 0) {
-						button.disabled = true;
-					}
-				}
-			});
+
+document.addEventListener('DOMContentLoaded',()=>{ 
+	const boxes = document.querySelectorAll('input[type="checkbox"]');
+	const list = document.getElementById('garbage-list');
+	const add = document.getElementById('button');
+	const del = document.getElementById('delete-button');
+	const reset = document.getElementById('reset-button');
+	let count = 0;
+	/* プルダウンリストは選択済みか？　*/
+	function check_the_pulldown(list){
+		const num = list.selectedIndex;
+		const val = list.options[num].value;
+		if (val!=0) return true;
+	}
+	/* チェックボックスは選択済みか？ */
+	function check_the_(boxes) {
+		for (let box of boxes) {
+			if (box.checked) {
+				add.disabled = false;
+				del.disabled = false;
+				return;
+			} else {
+				add.disabled = true;
+			}
 		}
-	reset_button.addEventListener('click',() => {
-		check_count = 0;
-		button.disabled = true;
+	}
+	/* プルダウンリスト選択時のボタン切り替え */
+	list.addEventListener('change',()=>{
+		if (check_the_pulldown(list)) {
+			del.disabled = false;
+			check_the_(boxes);
+		} else {
+			add.disabled = true;
+			del.disabled = true;
+		}
+	});
+	/* チェックボックス選択時のボタン切り替え */
+	for (let box of boxes) {
+		box.addEventListener('change',()=>{
+			(box.checked? count++ : count--);
+			if (count>0 && check_the_pulldown(list)) {
+				add.disabled = false;
+				del.disabled = false;
+			} else if (check_the_pulldown(list)) {
+				add.disabled = true;
+				del.disabled = false;
+			} else {
+				add.disabled = true;
+				del.disabled = true;
+			}
+		});
+	}
+	/* リセットボタンクリック時のボタン切り替え */
+	reset.addEventListener('click',()=>{
+		add.disabled = true;
+		del.disabled = true;
 	});
 }, false);
+
+
+
+
+
+
+
+
 </script>
 </html>

@@ -17,10 +17,10 @@ public class ValidationConfig implements WebMvcConfigurer {
 		return validator;
 	}
 
-	@Bean
-	public MessageSource messageSource() {
-		var messageSource = new ResourceBundleMessageSource();
-		messageSource.setBasename("validation");
-		return messageSource;
-	}
+    @Bean
+    MessageSource messageSource() {
+        var messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasename("validation");
+        return messageSource;
+    }
 }

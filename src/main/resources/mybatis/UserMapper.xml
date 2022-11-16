@@ -116,6 +116,10 @@
 		</foreach>
 	</delete>
 
+	<delete id="deleteScheduleNoCheck">
+		DELETE FROM schedules WHERE user_id = #{userId} AND garbage_id = #{garbage}
+	</delete>
+	
 	<delete id="deleteNonBurnable">
 		DELETE FROM non_burnable_waste WHERE
 		<foreach collection="weeks" item="week" separator="OR">
@@ -127,6 +131,7 @@
 	<delete id="deleteNonBurnableNoCheck">
 		DELETE FROM non_burnable_waste WHERE user_id = #{userId}
 	</delete>
+	
 	
 	<delete id="deleteAll">
 		DELETE schedules,non_burnable_waste FROM schedules LEFT JOIN non_burnable_waste

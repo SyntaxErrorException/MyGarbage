@@ -133,15 +133,15 @@ public class UserController {
 		String todayGarbage;
 		if (now.isBefore(LocalTime.of(8, 0))) {
 			if (strb[dow.getValue()].isEmpty()) {
-				todayGarbage = "今日のゴミ収集はありません。";
+				todayGarbage = "今日のゴミ収集はありません";
 			} else {
-				todayGarbage = "今日は" + dateAndGarbage[0].replaceFirst("^.*\s", "") + "の日です。";
+				todayGarbage = "今日は" + dateAndGarbage[0].replaceFirst("^.*\s", "") + "の日です";
 			}
 		} else {
 			if (strb[dow.plus(1).getValue()].isEmpty()) {
-				todayGarbage = "明日のゴミ収集はありません。";
+				todayGarbage = "明日のゴミ収集はありません";
 			} else {
-				todayGarbage = "明日は" + dateAndGarbage[1].replaceFirst("^.*\s", "") + "の日です。";
+				todayGarbage = "明日は" + dateAndGarbage[1].replaceFirst("^.*\s", "") + "の日です";
 			}
 		}
 

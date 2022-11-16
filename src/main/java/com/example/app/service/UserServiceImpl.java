@@ -58,12 +58,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void removeSchedule(Schedule schedule) throws Exception {
+		if(schedule.getDayOfWeek().size()==0) {
+			mapper.deleteScheduleNoCheck(schedule.getUserId(), schedule.getGarbage().getId());
+			return;
+		}
 		mapper.deleteSchedule(schedule.getUserId(), schedule.getGarbage().getId(), schedule.getDayOfWeek());
 	}
 
 	@Override
 	public void removeNonBurnable(NonBurnableWaste nonBurnable) throws Exception {
-		System.out.println("----デバッグ用----\n" + nonBurnable.getUserId());
 		if (nonBurnable.getWeeks().isEmpty() && nonBurnable.getDayOfWeek() == null) {
 			mapper.deleteNonBurnableNoCheck(nonBurnable.getUserId());
 			return;

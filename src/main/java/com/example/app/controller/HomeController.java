@@ -36,16 +36,17 @@ public class HomeController {
 	}
 
 	@PostMapping("register")
-	public String registerPost(@Validated(RegisterGroup.class) @ModelAttribute User user, Errors errors, RedirectAttributes ra)
+	public String registerPost(@Validated(RegisterGroup.class) @ModelAttribute User user, Errors errors,
+			RedirectAttributes ra)
 			throws Exception {
-		if (errors.hasErrors()) {
-			return "redirect:/register";
-		}
 		for (User u : adminService.getUserList()) {
-			if (user.getLoginId().equals(u.getLoginId())||user.getLoginId().equals("administrator")) {
+			if (user.getLoginId().equals(u.getLoginId()) || user.getLoginId().equals("administrator")) {
 				ra.addFlashAttribute("duplicatedId", "他のユーザとIDが重複しています。");
 				return "redirect:/register";
 			}
+		}
+		if (errors.hasErrors()) {
+			return "register";
 		}
 		userService.addUser(user);
 		return "redirect:/login";

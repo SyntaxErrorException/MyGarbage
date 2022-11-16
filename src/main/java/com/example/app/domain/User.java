@@ -12,19 +12,18 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Data;
+import validation.LoginGroup;
 import validation.RegisterGroup;
 
 @Data
 public class User implements UserDetails{
-	
 	private Integer id;
-	@NotBlank
-	@Pattern(regexp="[a-zA-Z0-9_-]{4,24}", message="IDは半角英数、アンダーバー、ハイフンで8～24文字です。")
+	@NotBlank(groups={LoginGroup.class})
+	@Pattern(regexp="[\\w\\d]{4,24}", message="IDは半角英数、アンダーバーで8～24文字です。",groups={RegisterGroup.class})
 	private String loginId;
-	@NotBlank
-	@Pattern(regexp="(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9!?\\\"#$%\\&'()=^~|\\@`[{;+:*]},<.>/?_-]{8,24}")
+	@NotBlank(groups={LoginGroup.class})
+	@Pattern(regexp="(?=.*[\\w])(?=.*[\\d])(?=.*[!-/:-@\\[-`{-~])[!-~]{8,24}",groups={RegisterGroup.class})
 	private String loginPass;
-	@NotBlank(groups={RegisterGroup.class})
 	@Size(min=1, max=45,groups={RegisterGroup.class})
 	private String name;
 	private List<String> roles;
