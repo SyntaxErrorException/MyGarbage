@@ -10,7 +10,8 @@
 		<form th:action="@{/login}" method="post" th:object="${user}"
 			class="form-signin">
 			<div class="container">
-				<h1 class="form-signin-heading">Please log in</h1>
+				<h1 class="form-signin-heading" style="text-align: left;">Please log in</h1>
+				<div class="login-container">
 				<p class="alert alert-danger" th:errors="*{loginId}"></p>
 				<p class="alert alert-danger" th:errors="*{loginPass}"></p>
 				<p class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}"
@@ -25,9 +26,12 @@
 					<input id="password" type="password" placeholder="Password"
 						th:field="*{loginPass}" class="form-control">
 				</p>
-				<button class="btn btn-lg btn-primary btn-block " type="submit">Log	in</button>
-				<a href="/register" class="container register-link">新規登録</a>
-		</div>
+				</div>
+				<div class="login-container">
+					<button class="login-btn btn-lg btn-primary btn-block " type="submit">Log	in</button>
+					<a href="/register" class="container register-link">新規登録</a>
+				</div>
+			</div>
 		</form>
 </body>
 </html>

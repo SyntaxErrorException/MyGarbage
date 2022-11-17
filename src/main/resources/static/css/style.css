@@ -100,11 +100,28 @@ option[selected][disabled] {
 	width: 80%;
 	margin: auto;
 }
+
+.login-container input {
+	width: 100%;
+	margin: auto;
+}
+
 .child-container {
 	width: 100%;
 	margin: 15px auto;
 	display: flex;
 	justify-content: left;
+}
+
+.login-container {
+	width: 100%;
+	margin: auto;
+	text-align: center;
+}
+
+.login-btn {
+	width: 100%;
+	margin: auto;
 }
 
 .midashi {
