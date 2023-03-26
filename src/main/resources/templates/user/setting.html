@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 			}
 		}
 	}
-	/* プルダウンリスト選択時のボタン切り替え */
+	/* プルダウンリスト選択時のボタン有効無効切り替え */
 	list.addEventListener('change',()=>{
 		if (check_the_pulldown(list)) {
 			del.disabled = false;
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 			del.disabled = true;
 		}
 	});
-	/* チェックボックス選択時のボタン切り替え */
+	/* チェックボックス選択時の有効無効ボタン切り替え */
 	for (let box of boxes) {
 		box.addEventListener('change',()=>{
 			(box.checked? count++ : count--);
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 			}
 		});
 	}
-	/* リセットボタンクリック時のボタン切り替え */
+	/* リセットボタンクリック時の有効無効ボタン切り替え */
 	reset.addEventListener('click',()=>{
 		add.disabled = true;
 		del.disabled = true;
